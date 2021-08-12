@@ -27,11 +27,22 @@ int main(void)
 	SPI_config();
 	
 	// Struct for the CAN Message that contains the sampled Sensor Data
+	// UAC-FL 0x700 0x701
+	// UAC-FR 0x702 0x703
+	// UAC-RL 0x704 0x705
+	// UAC-RR 0x706 0x707
+	
 	struct CAN_MOB can_SH_mob1;
-	can_SH_mob1.mob_id = 0x500;
+	can_SH_mob1.mob_id = 0x702;
 	can_SH_mob1.mob_idmask = 0; //We are sending this CAN Message Object (MOB) therefore we do not need an ID MASK
 	can_SH_mob1.mob_number = 1;
-	uint8_t SH_databytes1[8];
+	uint8_t SH_databytes1[2];
+	
+	struct CAN_MOB can_SH_mob2;
+	can_SH_mob1.mob_id = 0x703;
+	can_SH_mob1.mob_idmask = 0; //We are sending this CAN Message Object (MOB) therefore we do not need an ID MASK
+	can_SH_mob1.mob_number = 2;
+	uint8_t SH_databytes2[4];
 	
 	sei();
 	
@@ -47,14 +58,7 @@ int main(void)
 			
 			SH_databytes1[0] = adc_get_1() & 0xff;
 			SH_databytes1[1] = adc_get_1() >> 8;
-			SH_databytes1[2] = TYPK_getdata1()& 0xff;
-			SH_databytes1[3] = TYPK_getdata1()>> 8;
-			SH_databytes1[4] = TYPK_getdata2() & 0xff;
-			SH_databytes1[5] = TYPK_getdata2()>> 8;
-			SH_databytes1[6] = 899 & 0xff;
-			SH_databytes1[7] = 899 >> 8;
-
-			can_tx(&can_SH_mob1, SH_databytes1); //send the CAN Message		
+			can_tx(&can_SH_mob1, SH_databytes1); //send the CAN Message	100Hz	
 
 			sys_time_10 = 0;
 			sys_time_50++;
@@ -72,6 +76,12 @@ int main(void)
 		if(sys_time_500 >= 20){
 			sys_tick();
 			TYPK_read();
+			SH_databytes2[0] = TYPK_getdata1()& 0xff;
+			SH_databytes2[1] = TYPK_getdata1()>> 8;
+			SH_databytes2[2] = TYPK_getdata2() & 0xff;
+			SH_databytes2[3] = TYPK_getdata2()>> 8;
+			can_tx(&can_SH_mob2, SH_databytes2); //send the CAN Message only with 2 Hz as TYPK is not fast
+			
 			sys_time_500 = 0;
 			}
 		}
