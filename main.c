@@ -67,22 +67,9 @@ int main(void)
 		
 		//50ms loop
 		if(sys_time_50 >= 5){
-			
+	
 			sys_time_50 = 0;
 			sys_time_500++;
-			}
-			
-		//500ms loop	
-		if(sys_time_500 >= 20){
-			sys_tick();
-			TYPK_read();
-			SH_databytes2[0] = TYPK_getdata1()& 0xff;
-			SH_databytes2[1] = TYPK_getdata1()>> 8;
-			SH_databytes2[2] = TYPK_getdata2() & 0xff;
-			SH_databytes2[3] = TYPK_getdata2()>> 8;
-			can_tx(&can_SH_mob2, SH_databytes2); //send the CAN Message only with 2 Hz as TYPK is not fast
-			
-			sys_time_500 = 0;
 			}
 		}
 	}
