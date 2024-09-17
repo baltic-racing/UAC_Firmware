@@ -66,8 +66,9 @@ int main(void)
 		}
 		
 		//50ms loop
-		if(sys_time_50 >= 5){
-	
+		if(sys_time_50 >= 10){
+			sys_tick();
+				
 			sys_time_50 = 0;
 			sys_time_500++;
 			}

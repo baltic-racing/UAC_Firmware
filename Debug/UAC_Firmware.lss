@@ -1,0 +1,727 @@
+
+UAC_Firmware.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  000004ce  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         0000045a  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000013  00800100  00800100  000004ce  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  000004ce  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000500  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000108  00000000  00000000  00000540  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   000011b6  00000000  00000000  00000648  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 00000d98  00000000  00000000  000017fe  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   00000936  00000000  00000000  00002596  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000218  00000000  00000000  00002ecc  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    000006e5  00000000  00000000  000030e4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    000003d8  00000000  00000000  000037c9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 000000b8  00000000  00000000  00003ba1  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	49 c0       	rjmp	.+146    	; 0x94 <__ctors_end>
+   2:	00 00       	nop
+   4:	57 c0       	rjmp	.+174    	; 0xb4 <__bad_interrupt>
+   6:	00 00       	nop
+   8:	55 c0       	rjmp	.+170    	; 0xb4 <__bad_interrupt>
+   a:	00 00       	nop
+   c:	53 c0       	rjmp	.+166    	; 0xb4 <__bad_interrupt>
+   e:	00 00       	nop
+  10:	51 c0       	rjmp	.+162    	; 0xb4 <__bad_interrupt>
+  12:	00 00       	nop
+  14:	4f c0       	rjmp	.+158    	; 0xb4 <__bad_interrupt>
+  16:	00 00       	nop
+  18:	4d c0       	rjmp	.+154    	; 0xb4 <__bad_interrupt>
+  1a:	00 00       	nop
+  1c:	4b c0       	rjmp	.+150    	; 0xb4 <__bad_interrupt>
+  1e:	00 00       	nop
+  20:	49 c0       	rjmp	.+146    	; 0xb4 <__bad_interrupt>
+  22:	00 00       	nop
+  24:	47 c0       	rjmp	.+142    	; 0xb4 <__bad_interrupt>
+  26:	00 00       	nop
+  28:	45 c0       	rjmp	.+138    	; 0xb4 <__bad_interrupt>
+  2a:	00 00       	nop
+  2c:	43 c0       	rjmp	.+134    	; 0xb4 <__bad_interrupt>
+  2e:	00 00       	nop
+  30:	41 c0       	rjmp	.+130    	; 0xb4 <__bad_interrupt>
+  32:	00 00       	nop
+  34:	3f c0       	rjmp	.+126    	; 0xb4 <__bad_interrupt>
+  36:	00 00       	nop
+  38:	3d c0       	rjmp	.+122    	; 0xb4 <__bad_interrupt>
+  3a:	00 00       	nop
+  3c:	3b c0       	rjmp	.+118    	; 0xb4 <__bad_interrupt>
+  3e:	00 00       	nop
+  40:	98 c1       	rjmp	.+816    	; 0x372 <__vector_16>
+  42:	00 00       	nop
+  44:	37 c0       	rjmp	.+110    	; 0xb4 <__bad_interrupt>
+  46:	00 00       	nop
+  48:	35 c0       	rjmp	.+106    	; 0xb4 <__bad_interrupt>
+  4a:	00 00       	nop
+  4c:	33 c0       	rjmp	.+102    	; 0xb4 <__bad_interrupt>
+  4e:	00 00       	nop
+  50:	c9 c1       	rjmp	.+914    	; 0x3e4 <__vector_20>
+  52:	00 00       	nop
+  54:	2f c0       	rjmp	.+94     	; 0xb4 <__bad_interrupt>
+  56:	00 00       	nop
+  58:	2d c0       	rjmp	.+90     	; 0xb4 <__bad_interrupt>
+  5a:	00 00       	nop
+  5c:	2b c0       	rjmp	.+86     	; 0xb4 <__bad_interrupt>
+  5e:	00 00       	nop
+  60:	29 c0       	rjmp	.+82     	; 0xb4 <__bad_interrupt>
+  62:	00 00       	nop
+  64:	38 c0       	rjmp	.+112    	; 0xd6 <__vector_25>
+  66:	00 00       	nop
+  68:	25 c0       	rjmp	.+74     	; 0xb4 <__bad_interrupt>
+  6a:	00 00       	nop
+  6c:	23 c0       	rjmp	.+70     	; 0xb4 <__bad_interrupt>
+  6e:	00 00       	nop
+  70:	21 c0       	rjmp	.+66     	; 0xb4 <__bad_interrupt>
+  72:	00 00       	nop
+  74:	1f c0       	rjmp	.+62     	; 0xb4 <__bad_interrupt>
+  76:	00 00       	nop
+  78:	1d c0       	rjmp	.+58     	; 0xb4 <__bad_interrupt>
+  7a:	00 00       	nop
+  7c:	1b c0       	rjmp	.+54     	; 0xb4 <__bad_interrupt>
+  7e:	00 00       	nop
+  80:	19 c0       	rjmp	.+50     	; 0xb4 <__bad_interrupt>
+  82:	00 00       	nop
+  84:	17 c0       	rjmp	.+46     	; 0xb4 <__bad_interrupt>
+  86:	00 00       	nop
+  88:	15 c0       	rjmp	.+42     	; 0xb4 <__bad_interrupt>
+  8a:	00 00       	nop
+  8c:	13 c0       	rjmp	.+38     	; 0xb4 <__bad_interrupt>
+  8e:	00 00       	nop
+  90:	11 c0       	rjmp	.+34     	; 0xb4 <__bad_interrupt>
+	...
+
+00000094 <__ctors_end>:
+  94:	11 24       	eor	r1, r1
+  96:	1f be       	out	0x3f, r1	; 63
+  98:	cf ef       	ldi	r28, 0xFF	; 255
+  9a:	d0 e1       	ldi	r29, 0x10	; 16
+  9c:	de bf       	out	0x3e, r29	; 62
+  9e:	cd bf       	out	0x3d, r28	; 61
+
+000000a0 <__do_clear_bss>:
+  a0:	21 e0       	ldi	r18, 0x01	; 1
+  a2:	a0 e0       	ldi	r26, 0x00	; 0
+  a4:	b1 e0       	ldi	r27, 0x01	; 1
+  a6:	01 c0       	rjmp	.+2      	; 0xaa <.do_clear_bss_start>
+
+000000a8 <.do_clear_bss_loop>:
+  a8:	1d 92       	st	X+, r1
+
+000000aa <.do_clear_bss_start>:
+  aa:	a3 31       	cpi	r26, 0x13	; 19
+  ac:	b2 07       	cpc	r27, r18
+  ae:	e1 f7       	brne	.-8      	; 0xa8 <.do_clear_bss_loop>
+  b0:	ed d0       	rcall	.+474    	; 0x28c <main>
+  b2:	d1 c1       	rjmp	.+930    	; 0x456 <_exit>
+
+000000b4 <__bad_interrupt>:
+  b4:	a5 cf       	rjmp	.-182    	; 0x0 <__vectors>
+
+000000b6 <adc_config>:
+
+void adc_start_conversion(){
+	//start next conversion with same config
+	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (1<<ADPS0) | (1<<ADIE) | (1<<ADSC); //prescaler to 16 
+	//!!! Currently we have to Start the conversion manually with ADSC=1. Normally SMCR should auto trigger the conversion but as of now it does not work. neither do we know if the uC goes into Noise reduction mode
+	SMCR = (1<<SM0)|(0<<SM1)|(0<<SM2); //enable ADC noise reduction mode and starts the conversion
+  b6:	81 e4       	ldi	r24, 0x41	; 65
+  b8:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__TEXT_REGION_LENGTH__+0x7e007c>
+  bc:	ea e7       	ldi	r30, 0x7A	; 122
+  be:	f0 e0       	ldi	r31, 0x00	; 0
+  c0:	8c e8       	ldi	r24, 0x8C	; 140
+  c2:	80 83       	st	Z, r24
+  c4:	80 81       	ld	r24, Z
+  c6:	80 64       	ori	r24, 0x40	; 64
+  c8:	80 83       	st	Z, r24
+  ca:	ee e7       	ldi	r30, 0x7E	; 126
+  cc:	f0 e0       	ldi	r31, 0x00	; 0
+  ce:	80 81       	ld	r24, Z
+  d0:	81 60       	ori	r24, 0x01	; 1
+  d2:	80 83       	st	Z, r24
+  d4:	08 95       	ret
+
+000000d6 <__vector_25>:
+}
+
+ISR(ADC_vect){
+  d6:	1f 92       	push	r1
+  d8:	0f 92       	push	r0
+  da:	0f b6       	in	r0, 0x3f	; 63
+  dc:	0f 92       	push	r0
+  de:	11 24       	eor	r1, r1
+  e0:	0b b6       	in	r0, 0x3b	; 59
+  e2:	0f 92       	push	r0
+  e4:	2f 93       	push	r18
+  e6:	3f 93       	push	r19
+  e8:	8f 93       	push	r24
+  ea:	ef 93       	push	r30
+  ec:	ff 93       	push	r31
+	// store ADC result
+	adc_values[adc_next] = ADC;
+  ee:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
+  f2:	e8 2f       	mov	r30, r24
+  f4:	f0 e0       	ldi	r31, 0x00	; 0
+  f6:	20 91 78 00 	lds	r18, 0x0078	; 0x800078 <__TEXT_REGION_LENGTH__+0x7e0078>
+  fa:	30 91 79 00 	lds	r19, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7e0079>
+  fe:	ee 0f       	add	r30, r30
+ 100:	ff 1f       	adc	r31, r31
+ 102:	e3 5f       	subi	r30, 0xF3	; 243
+ 104:	fe 4f       	sbci	r31, 0xFE	; 254
+ 106:	31 83       	std	Z+1, r19	; 0x01
+ 108:	20 83       	st	Z, r18
+	adc_next++;
+ 10a:	8f 5f       	subi	r24, 0xFF	; 255
+ 10c:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
+	// reset index var
+	if(adc_next == 1){
+ 110:	81 30       	cpi	r24, 0x01	; 1
+ 112:	11 f4       	brne	.+4      	; 0x118 <__vector_25+0x42>
+		adc_next = 0;
+ 114:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <__DATA_REGION_ORIGIN__>
+	}
+	// select other ADC Input
+	ADMUX = (1<<REFS0) | adc_next;
+ 118:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 11c:	80 64       	ori	r24, 0x40	; 64
+ 11e:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__TEXT_REGION_LENGTH__+0x7e007c>
+}
+ 122:	ff 91       	pop	r31
+ 124:	ef 91       	pop	r30
+ 126:	8f 91       	pop	r24
+ 128:	3f 91       	pop	r19
+ 12a:	2f 91       	pop	r18
+ 12c:	0f 90       	pop	r0
+ 12e:	0b be       	out	0x3b, r0	; 59
+ 130:	0f 90       	pop	r0
+ 132:	0f be       	out	0x3f, r0	; 63
+ 134:	0f 90       	pop	r0
+ 136:	1f 90       	pop	r1
+ 138:	18 95       	reti
+
+0000013a <adc_get_1>:
+
+// getter for each adc var
+uint16_t adc_get_1(){
+	return adc_values[0];
+	//return 12;
+}
+ 13a:	80 91 0d 01 	lds	r24, 0x010D	; 0x80010d <adc_values>
+ 13e:	90 91 0e 01 	lds	r25, 0x010E	; 0x80010e <adc_values+0x1>
+ 142:	08 95       	ret
+
+00000144 <can_check_free>:
+		CANPAGE = (to_receive->mob_number << MOBNB0) | (1 << AINC) | byte;
+		data[byte] = CANMSG;
+	}
+	
+	
+}
+ 144:	88 30       	cpi	r24, 0x08	; 8
+ 146:	78 f0       	brcs	.+30     	; 0x166 <can_check_free+0x22>
+ 148:	20 91 dd 00 	lds	r18, 0x00DD	; 0x8000dd <__TEXT_REGION_LENGTH__+0x7e00dd>
+ 14c:	90 e0       	ldi	r25, 0x00	; 0
+ 14e:	08 97       	sbiw	r24, 0x08	; 8
+ 150:	30 e0       	ldi	r19, 0x00	; 0
+ 152:	02 c0       	rjmp	.+4      	; 0x158 <can_check_free+0x14>
+ 154:	35 95       	asr	r19
+ 156:	27 95       	ror	r18
+ 158:	8a 95       	dec	r24
+ 15a:	e2 f7       	brpl	.-8      	; 0x154 <can_check_free+0x10>
+ 15c:	81 e0       	ldi	r24, 0x01	; 1
+ 15e:	20 ff       	sbrs	r18, 0
+ 160:	0d c0       	rjmp	.+26     	; 0x17c <can_check_free+0x38>
+ 162:	80 e0       	ldi	r24, 0x00	; 0
+ 164:	08 95       	ret
+ 166:	20 91 dc 00 	lds	r18, 0x00DC	; 0x8000dc <__TEXT_REGION_LENGTH__+0x7e00dc>
+ 16a:	30 e0       	ldi	r19, 0x00	; 0
+ 16c:	02 c0       	rjmp	.+4      	; 0x172 <can_check_free+0x2e>
+ 16e:	35 95       	asr	r19
+ 170:	27 95       	ror	r18
+ 172:	8a 95       	dec	r24
+ 174:	e2 f7       	brpl	.-8      	; 0x16e <can_check_free+0x2a>
+ 176:	81 e0       	ldi	r24, 0x01	; 1
+ 178:	20 fd       	sbrc	r18, 0
+ 17a:	80 e0       	ldi	r24, 0x00	; 0
+ 17c:	08 95       	ret
+
+0000017e <can_cfg>:
+ 17e:	10 92 d8 00 	sts	0x00D8, r1	; 0x8000d8 <__TEXT_REGION_LENGTH__+0x7e00d8>
+ 182:	40 e0       	ldi	r20, 0x00	; 0
+ 184:	29 c0       	rjmp	.+82     	; 0x1d8 <can_cfg+0x5a>
+ 186:	80 e1       	ldi	r24, 0x10	; 16
+ 188:	48 9f       	mul	r20, r24
+ 18a:	90 01       	movw	r18, r0
+ 18c:	11 24       	eor	r1, r1
+ 18e:	82 2f       	mov	r24, r18
+ 190:	88 60       	ori	r24, 0x08	; 8
+ 192:	80 93 ed 00 	sts	0x00ED, r24	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7e00ed>
+ 196:	10 92 ee 00 	sts	0x00EE, r1	; 0x8000ee <__TEXT_REGION_LENGTH__+0x7e00ee>
+ 19a:	10 92 ef 00 	sts	0x00EF, r1	; 0x8000ef <__TEXT_REGION_LENGTH__+0x7e00ef>
+ 19e:	10 92 f0 00 	sts	0x00F0, r1	; 0x8000f0 <__TEXT_REGION_LENGTH__+0x7e00f0>
+ 1a2:	10 92 f1 00 	sts	0x00F1, r1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7e00f1>
+ 1a6:	10 92 f2 00 	sts	0x00F2, r1	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7e00f2>
+ 1aa:	10 92 f3 00 	sts	0x00F3, r1	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7e00f3>
+ 1ae:	10 92 f4 00 	sts	0x00F4, r1	; 0x8000f4 <__TEXT_REGION_LENGTH__+0x7e00f4>
+ 1b2:	10 92 f5 00 	sts	0x00F5, r1	; 0x8000f5 <__TEXT_REGION_LENGTH__+0x7e00f5>
+ 1b6:	10 92 f6 00 	sts	0x00F6, r1	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7e00f6>
+ 1ba:	10 92 f7 00 	sts	0x00F7, r1	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7e00f7>
+ 1be:	80 e0       	ldi	r24, 0x00	; 0
+ 1c0:	08 c0       	rjmp	.+16     	; 0x1d2 <can_cfg+0x54>
+ 1c2:	98 2f       	mov	r25, r24
+ 1c4:	92 2b       	or	r25, r18
+ 1c6:	98 60       	ori	r25, 0x08	; 8
+ 1c8:	90 93 ed 00 	sts	0x00ED, r25	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7e00ed>
+ 1cc:	10 92 fa 00 	sts	0x00FA, r1	; 0x8000fa <__TEXT_REGION_LENGTH__+0x7e00fa>
+ 1d0:	8f 5f       	subi	r24, 0xFF	; 255
+ 1d2:	88 30       	cpi	r24, 0x08	; 8
+ 1d4:	b0 f3       	brcs	.-20     	; 0x1c2 <can_cfg+0x44>
+ 1d6:	4f 5f       	subi	r20, 0xFF	; 255
+ 1d8:	4f 30       	cpi	r20, 0x0F	; 15
+ 1da:	a8 f2       	brcs	.-86     	; 0x186 <can_cfg+0x8>
+ 1dc:	82 e0       	ldi	r24, 0x02	; 2
+ 1de:	80 93 e2 00 	sts	0x00E2, r24	; 0x8000e2 <__TEXT_REGION_LENGTH__+0x7e00e2>
+ 1e2:	8c e0       	ldi	r24, 0x0C	; 12
+ 1e4:	80 93 e3 00 	sts	0x00E3, r24	; 0x8000e3 <__TEXT_REGION_LENGTH__+0x7e00e3>
+ 1e8:	87 e3       	ldi	r24, 0x37	; 55
+ 1ea:	80 93 e4 00 	sts	0x00E4, r24	; 0x8000e4 <__TEXT_REGION_LENGTH__+0x7e00e4>
+ 1ee:	10 92 db 00 	sts	0x00DB, r1	; 0x8000db <__TEXT_REGION_LENGTH__+0x7e00db>
+ 1f2:	e8 ed       	ldi	r30, 0xD8	; 216
+ 1f4:	f0 e0       	ldi	r31, 0x00	; 0
+ 1f6:	80 81       	ld	r24, Z
+ 1f8:	82 60       	ori	r24, 0x02	; 2
+ 1fa:	80 83       	st	Z, r24
+ 1fc:	08 95       	ret
+
+000001fe <can_tx>:
+void can_tx(struct CAN_MOB *to_send, uint8_t *data){
+ 1fe:	cf 93       	push	r28
+ 200:	df 93       	push	r29
+ 202:	ec 01       	movw	r28, r24
+	
+	for(uint8_t byte = 0; byte <8; byte++){
+ 204:	20 e0       	ldi	r18, 0x00	; 0
+ 206:	10 c0       	rjmp	.+32     	; 0x228 <can_tx+0x2a>
+		CANPAGE = (to_send->mob_number << MOBNB0) | (1 << AINC) | byte;
+ 208:	8c 81       	ldd	r24, Y+4	; 0x04
+ 20a:	30 e1       	ldi	r19, 0x10	; 16
+ 20c:	83 9f       	mul	r24, r19
+ 20e:	c0 01       	movw	r24, r0
+ 210:	11 24       	eor	r1, r1
+ 212:	82 2b       	or	r24, r18
+ 214:	88 60       	ori	r24, 0x08	; 8
+ 216:	80 93 ed 00 	sts	0x00ED, r24	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7e00ed>
+		CANMSG = data[byte];
+ 21a:	fb 01       	movw	r30, r22
+ 21c:	e2 0f       	add	r30, r18
+ 21e:	f1 1d       	adc	r31, r1
+ 220:	80 81       	ld	r24, Z
+ 222:	80 93 fa 00 	sts	0x00FA, r24	; 0x8000fa <__TEXT_REGION_LENGTH__+0x7e00fa>
+	
+	
+}
+void can_tx(struct CAN_MOB *to_send, uint8_t *data){
+	
+	for(uint8_t byte = 0; byte <8; byte++){
+ 226:	2f 5f       	subi	r18, 0xFF	; 255
+ 228:	28 30       	cpi	r18, 0x08	; 8
+ 22a:	70 f3       	brcs	.-36     	; 0x208 <can_tx+0xa>
+		CANPAGE = (to_send->mob_number << MOBNB0) | (1 << AINC) | byte;
+		CANMSG = data[byte];
+	}
+	
+	CANPAGE = to_send->mob_number << MOBNB0;
+ 22c:	8c 81       	ldd	r24, Y+4	; 0x04
+ 22e:	82 95       	swap	r24
+ 230:	80 7f       	andi	r24, 0xF0	; 240
+ 232:	80 93 ed 00 	sts	0x00ED, r24	; 0x8000ed <__TEXT_REGION_LENGTH__+0x7e00ed>
+	if (can_check_free(to_send->mob_number)){
+ 236:	8c 81       	ldd	r24, Y+4	; 0x04
+ 238:	85 df       	rcall	.-246    	; 0x144 <can_check_free>
+ 23a:	88 23       	and	r24, r24
+ 23c:	21 f1       	breq	.+72     	; 0x286 <can_tx+0x88>
+		CANSTMOB = 0;
+ 23e:	ee ee       	ldi	r30, 0xEE	; 238
+ 240:	f0 e0       	ldi	r31, 0x00	; 0
+ 242:	10 82       	st	Z, r1
+		CANIDT1 = to_send->mob_id>>3;
+ 244:	88 81       	ld	r24, Y
+ 246:	99 81       	ldd	r25, Y+1	; 0x01
+ 248:	96 95       	lsr	r25
+ 24a:	87 95       	ror	r24
+ 24c:	96 95       	lsr	r25
+ 24e:	87 95       	ror	r24
+ 250:	96 95       	lsr	r25
+ 252:	87 95       	ror	r24
+ 254:	80 93 f3 00 	sts	0x00F3, r24	; 0x8000f3 <__TEXT_REGION_LENGTH__+0x7e00f3>
+		CANIDT2 = (to_send->mob_id << 5) & 0b11100000;
+ 258:	88 81       	ld	r24, Y
+ 25a:	82 95       	swap	r24
+ 25c:	88 0f       	add	r24, r24
+ 25e:	80 7e       	andi	r24, 0xE0	; 224
+ 260:	80 93 f2 00 	sts	0x00F2, r24	; 0x8000f2 <__TEXT_REGION_LENGTH__+0x7e00f2>
+		CANIDT3 = 0;
+ 264:	10 92 f1 00 	sts	0x00F1, r1	; 0x8000f1 <__TEXT_REGION_LENGTH__+0x7e00f1>
+		CANIDT4 = 0;
+ 268:	10 92 f0 00 	sts	0x00F0, r1	; 0x8000f0 <__TEXT_REGION_LENGTH__+0x7e00f0>
+		CANIDM1 = 0; //0b11111111;
+ 26c:	10 92 f7 00 	sts	0x00F7, r1	; 0x8000f7 <__TEXT_REGION_LENGTH__+0x7e00f7>
+		CANIDM2 = 0; //0b11100000;
+ 270:	10 92 f6 00 	sts	0x00F6, r1	; 0x8000f6 <__TEXT_REGION_LENGTH__+0x7e00f6>
+		CANIDM3 = 0;
+ 274:	10 92 f5 00 	sts	0x00F5, r1	; 0x8000f5 <__TEXT_REGION_LENGTH__+0x7e00f5>
+		CANIDM4 = 0;
+ 278:	10 92 f4 00 	sts	0x00F4, r1	; 0x8000f4 <__TEXT_REGION_LENGTH__+0x7e00f4>
+		CANSTMOB = 0;
+ 27c:	10 82       	st	Z, r1
+		CANCDMOB = (1<<CONMOB0) | 1 << DLC3;
+ 27e:	88 e4       	ldi	r24, 0x48	; 72
+ 280:	80 93 ef 00 	sts	0x00EF, r24	; 0x8000ef <__TEXT_REGION_LENGTH__+0x7e00ef>
+		CANSTMOB = 0;
+ 284:	10 82       	st	Z, r1
+	}
+	
+}
+ 286:	df 91       	pop	r29
+ 288:	cf 91       	pop	r28
+ 28a:	08 95       	ret
+
+0000028c <main>:
+volatile uint8_t sys_time_10 = 0;
+volatile uint8_t sys_time_50 = 0;
+volatile uint8_t sys_time_500 = 0;
+
+int main(void)
+{
+ 28c:	cf 93       	push	r28
+ 28e:	df 93       	push	r29
+ 290:	cd b7       	in	r28, 0x3d	; 61
+ 292:	de b7       	in	r29, 0x3e	; 62
+ 294:	27 97       	sbiw	r28, 0x07	; 7
+ 296:	0f b6       	in	r0, 0x3f	; 63
+ 298:	f8 94       	cli
+ 29a:	de bf       	out	0x3e, r29	; 62
+ 29c:	0f be       	out	0x3f, r0	; 63
+ 29e:	cd bf       	out	0x3d, r28	; 61
+	can_cfg();
+ 2a0:	6e df       	rcall	.-292    	; 0x17e <can_cfg>
+	sys_timer_config();
+ 2a2:	5f d0       	rcall	.+190    	; 0x362 <sys_timer_config>
+	port_config();
+ 2a4:	4f d0       	rcall	.+158    	; 0x344 <port_config>
+	adc_config();
+ 2a6:	07 df       	rcall	.-498    	; 0xb6 <adc_config>
+ 2a8:	89 d0       	rcall	.+274    	; 0x3bc <SPI_config>
+	SPI_config();
+ 2aa:	1c 82       	std	Y+4, r1	; 0x04
+ 2ac:	1b 82       	std	Y+3, r1	; 0x03
+	// UAC-RL 0x704 0x705
+	// UAC-RR 0x706 0x707
+	
+	struct CAN_MOB can_SH_mob1;
+	can_SH_mob1.mob_id = 0x702;
+	can_SH_mob1.mob_idmask = 0; //We are sending this CAN Message Object (MOB) therefore we do not need an ID MASK
+ 2ae:	83 e0       	ldi	r24, 0x03	; 3
+ 2b0:	97 e0       	ldi	r25, 0x07	; 7
+	can_SH_mob1.mob_number = 1;
+	uint8_t SH_databytes1[2];
+	
+	struct CAN_MOB can_SH_mob2;
+	can_SH_mob1.mob_id = 0x703;
+ 2b2:	9a 83       	std	Y+2, r25	; 0x02
+ 2b4:	89 83       	std	Y+1, r24	; 0x01
+ 2b6:	82 e0       	ldi	r24, 0x02	; 2
+ 2b8:	8d 83       	std	Y+5, r24	; 0x05
+	can_SH_mob1.mob_idmask = 0; //We are sending this CAN Message Object (MOB) therefore we do not need an ID MASK
+	can_SH_mob1.mob_number = 2;
+ 2ba:	78 94       	sei
+ 2bc:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <sys_time>
+	
+	sei();
+	
+    while (1) {
+		//1ms loop
+		if((sys_time - time_old) >= 1){ 
+ 2c0:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <sys_time+0x1>
+ 2c4:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <sys_time+0x2>
+ 2c8:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <sys_time+0x3>
+ 2cc:	40 91 04 01 	lds	r20, 0x0104	; 0x800104 <time_old>
+ 2d0:	50 91 05 01 	lds	r21, 0x0105	; 0x800105 <time_old+0x1>
+ 2d4:	60 91 06 01 	lds	r22, 0x0106	; 0x800106 <time_old+0x2>
+ 2d8:	70 91 07 01 	lds	r23, 0x0107	; 0x800107 <time_old+0x3>
+ 2dc:	84 17       	cp	r24, r20
+ 2de:	95 07       	cpc	r25, r21
+ 2e0:	a6 07       	cpc	r26, r22
+ 2e2:	b7 07       	cpc	r27, r23
+ 2e4:	11 f1       	breq	.+68     	; 0x32a <main+0x9e>
+ 2e6:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <time_old>
+			time_old = sys_time;
+ 2ea:	90 93 05 01 	sts	0x0105, r25	; 0x800105 <time_old+0x1>
+ 2ee:	a0 93 06 01 	sts	0x0106, r26	; 0x800106 <time_old+0x2>
+ 2f2:	b0 93 07 01 	sts	0x0107, r27	; 0x800107 <time_old+0x3>
+ 2f6:	80 91 03 01 	lds	r24, 0x0103	; 0x800103 <sys_time_10>
+			//adc_start_conversion();
+			sys_time_10++;
+ 2fa:	8f 5f       	subi	r24, 0xFF	; 255
+ 2fc:	80 93 03 01 	sts	0x0103, r24	; 0x800103 <sys_time_10>
+ 300:	80 91 03 01 	lds	r24, 0x0103	; 0x800103 <sys_time_10>
+				
+		//10ms loop
+		if (sys_time_10 >= 10){  
+ 304:	8a 30       	cpi	r24, 0x0A	; 10
+ 306:	88 f0       	brcs	.+34     	; 0x32a <main+0x9e>
+			
+			SH_databytes1[0] = adc_get_1() & 0xff;
+ 308:	18 df       	rcall	.-464    	; 0x13a <adc_get_1>
+ 30a:	8e 83       	std	Y+6, r24	; 0x06
+ 30c:	16 df       	rcall	.-468    	; 0x13a <adc_get_1>
+			SH_databytes1[1] = adc_get_1() >> 8;
+ 30e:	9f 83       	std	Y+7, r25	; 0x07
+ 310:	be 01       	movw	r22, r28
+			can_tx(&can_SH_mob1, SH_databytes1); //send the CAN Message	100Hz	
+ 312:	6a 5f       	subi	r22, 0xFA	; 250
+ 314:	7f 4f       	sbci	r23, 0xFF	; 255
+ 316:	ce 01       	movw	r24, r28
+ 318:	01 96       	adiw	r24, 0x01	; 1
+ 31a:	71 df       	rcall	.-286    	; 0x1fe <can_tx>
+ 31c:	10 92 03 01 	sts	0x0103, r1	; 0x800103 <sys_time_10>
+
+			sys_time_10 = 0;
+ 320:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <sys_time_50>
+			sys_time_50++;
+ 324:	8f 5f       	subi	r24, 0xFF	; 255
+ 326:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <sys_time_50>
+ 32a:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <sys_time_50>
+			}
+		}
+		
+		//50ms loop
+		if(sys_time_50 >= 10){
+ 32e:	8a 30       	cpi	r24, 0x0A	; 10
+ 330:	28 f2       	brcs	.-118    	; 0x2bc <main+0x30>
+ 332:	12 d0       	rcall	.+36     	; 0x358 <sys_tick>
+			sys_tick();
+ 334:	10 92 02 01 	sts	0x0102, r1	; 0x800102 <sys_time_50>
+				
+			sys_time_50 = 0;
+ 338:	80 91 01 01 	lds	r24, 0x0101	; 0x800101 <sys_time_500>
+			sys_time_500++;
+ 33c:	8f 5f       	subi	r24, 0xFF	; 255
+ 33e:	80 93 01 01 	sts	0x0101, r24	; 0x800101 <sys_time_500>
+ 342:	bc cf       	rjmp	.-136    	; 0x2bc <main+0x30>
+
+00000344 <port_config>:
+ */ 
+#include "misc_functions.h"
+volatile unsigned long sys_time = 0;
+
+void port_config(){
+	DDRA = 0 | (1<<PA0) | (1<<PA1);							//Heart & Error
+ 344:	83 e0       	ldi	r24, 0x03	; 3
+ 346:	81 b9       	out	0x01, r24	; 1
+	DDRB = 0 | (1<<PB6);									//SPI, Setup is done in SPI.C & 3,3V Enbale	
+ 348:	80 e4       	ldi	r24, 0x40	; 64
+ 34a:	84 b9       	out	0x04, r24	; 4
+	DDRC = 0;												//empty
+ 34c:	17 b8       	out	0x07, r1	; 7
+	DDRD = 0;												//Can so all Input Setup is done in CANlib.C
+ 34e:	1a b8       	out	0x0a, r1	; 10
+	DDRE = 0;												//empty
+ 350:	1d b8       	out	0x0d, r1	; 13
+	DDRF = 0;												//mark analog inputs on Port F as input		
+ 352:	10 ba       	out	0x10, r1	; 16
+	PORTB = 0| (1<<PB6);									//switch 3,3V enable off as we currently use nothing with 3,3V																		
+ 354:	85 b9       	out	0x05, r24	; 5
+ 356:	08 95       	ret
+
+00000358 <sys_tick>:
+}
+
+void sys_tick(){
+	PORTA ^= 1<<PA1; //toggling the Status of PA1 to make the Heart LED blink every SYStick
+ 358:	92 b1       	in	r25, 0x02	; 2
+ 35a:	82 e0       	ldi	r24, 0x02	; 2
+ 35c:	89 27       	eor	r24, r25
+ 35e:	82 b9       	out	0x02, r24	; 2
+ 360:	08 95       	ret
+
+00000362 <sys_timer_config>:
+}
+
+void sys_timer_config(){
+	//8 bit Timer 0 configuration
+	//ctc mode and 64 as prescaler for 16Mhz
+	TCCR0A = 0 | (1<<WGM01) | (1<<CS01) | (1<<CS00);
+ 362:	8b e0       	ldi	r24, 0x0B	; 11
+ 364:	84 bd       	out	0x24, r24	; 36
+	TIMSK0 = 0 | (1<<OCF0A);	//compare interrupt enable
+ 366:	82 e0       	ldi	r24, 0x02	; 2
+ 368:	80 93 6e 00 	sts	0x006E, r24	; 0x80006e <__TEXT_REGION_LENGTH__+0x7e006e>
+	OCR0A = 250-1;				// compare value for 1ms;
+ 36c:	89 ef       	ldi	r24, 0xF9	; 249
+ 36e:	87 bd       	out	0x27, r24	; 39
+ 370:	08 95       	ret
+
+00000372 <__vector_16>:
+}
+
+//ISR for Timer 0 compare interrupt
+ISR(TIMER0_COMP_vect){
+ 372:	1f 92       	push	r1
+ 374:	0f 92       	push	r0
+ 376:	0f b6       	in	r0, 0x3f	; 63
+ 378:	0f 92       	push	r0
+ 37a:	11 24       	eor	r1, r1
+ 37c:	8f 93       	push	r24
+ 37e:	9f 93       	push	r25
+ 380:	af 93       	push	r26
+ 382:	bf 93       	push	r27
+	sys_time++; //system time generation
+ 384:	80 91 08 01 	lds	r24, 0x0108	; 0x800108 <sys_time>
+ 388:	90 91 09 01 	lds	r25, 0x0109	; 0x800109 <sys_time+0x1>
+ 38c:	a0 91 0a 01 	lds	r26, 0x010A	; 0x80010a <sys_time+0x2>
+ 390:	b0 91 0b 01 	lds	r27, 0x010B	; 0x80010b <sys_time+0x3>
+ 394:	01 96       	adiw	r24, 0x01	; 1
+ 396:	a1 1d       	adc	r26, r1
+ 398:	b1 1d       	adc	r27, r1
+ 39a:	80 93 08 01 	sts	0x0108, r24	; 0x800108 <sys_time>
+ 39e:	90 93 09 01 	sts	0x0109, r25	; 0x800109 <sys_time+0x1>
+ 3a2:	a0 93 0a 01 	sts	0x010A, r26	; 0x80010a <sys_time+0x2>
+ 3a6:	b0 93 0b 01 	sts	0x010B, r27	; 0x80010b <sys_time+0x3>
+	//for every time the timer equals 249 an interrupt is generated resulting in increasing the SYStime
+}
+ 3aa:	bf 91       	pop	r27
+ 3ac:	af 91       	pop	r26
+ 3ae:	9f 91       	pop	r25
+ 3b0:	8f 91       	pop	r24
+ 3b2:	0f 90       	pop	r0
+ 3b4:	0f be       	out	0x3f, r0	; 63
+ 3b6:	0f 90       	pop	r0
+ 3b8:	1f 90       	pop	r1
+ 3ba:	18 95       	reti
+
+000003bc <SPI_config>:
+uint16_t TYPK_getdata2(){
+	//cli(); //disable Interrupts so that the SPI transfer will not corrupt our data in a way that we get the MSB of n and LSB of n-1
+	uint16_t TYPkDATA2 =  ((SPIdata[2] << 8) | SPIdata[3]) >> 3;//PUT MSB shifted to left by 8 in place and or together with LSB then shift to right by three to get rid of Status bits
+	//sei(); // enable Interrupts again
+	return TYPkDATA2;										
+}
+ 3bc:	84 b1       	in	r24, 0x04	; 4
+ 3be:	87 60       	ori	r24, 0x07	; 7
+ 3c0:	84 b9       	out	0x04, r24	; 4
+ 3c2:	84 b1       	in	r24, 0x04	; 4
+ 3c4:	87 7f       	andi	r24, 0xF7	; 247
+ 3c6:	84 b9       	out	0x04, r24	; 4
+ 3c8:	84 b1       	in	r24, 0x04	; 4
+ 3ca:	80 63       	ori	r24, 0x30	; 48
+ 3cc:	84 b9       	out	0x04, r24	; 4
+ 3ce:	85 b1       	in	r24, 0x05	; 5
+ 3d0:	81 60       	ori	r24, 0x01	; 1
+ 3d2:	85 b9       	out	0x05, r24	; 5
+ 3d4:	85 b1       	in	r24, 0x05	; 5
+ 3d6:	80 63       	ori	r24, 0x30	; 48
+ 3d8:	85 b9       	out	0x05, r24	; 5
+ 3da:	87 ed       	ldi	r24, 0xD7	; 215
+ 3dc:	8c bd       	out	0x2c, r24	; 44
+ 3de:	8d b5       	in	r24, 0x2d	; 45
+ 3e0:	8d bd       	out	0x2d, r24	; 45
+ 3e2:	08 95       	ret
+
+000003e4 <__vector_20>:
+
+	ISR(SPI_STC_vect){
+ 3e4:	1f 92       	push	r1
+ 3e6:	0f 92       	push	r0
+ 3e8:	0f b6       	in	r0, 0x3f	; 63
+ 3ea:	0f 92       	push	r0
+ 3ec:	11 24       	eor	r1, r1
+ 3ee:	0b b6       	in	r0, 0x3b	; 59
+ 3f0:	0f 92       	push	r0
+ 3f2:	8f 93       	push	r24
+ 3f4:	9f 93       	push	r25
+ 3f6:	ef 93       	push	r30
+ 3f8:	ff 93       	push	r31
+		//Store the data that has been pushed into SPDR via the Slave
+		SPIdata[SPIcount] = ~SPDR;
+ 3fa:	80 91 0c 01 	lds	r24, 0x010C	; 0x80010c <SPIcount>
+ 3fe:	e8 2f       	mov	r30, r24
+ 400:	f0 e0       	ldi	r31, 0x00	; 0
+ 402:	9e b5       	in	r25, 0x2e	; 46
+ 404:	e1 5f       	subi	r30, 0xF1	; 241
+ 406:	fe 4f       	sbci	r31, 0xFE	; 254
+ 408:	90 95       	com	r25
+ 40a:	90 83       	st	Z, r25
+		SPIcount++; //incrementing the counter that indicates the number of bytes that has been transmitted
+ 40c:	8f 5f       	subi	r24, 0xFF	; 255
+ 40e:	80 93 0c 01 	sts	0x010C, r24	; 0x80010c <SPIcount>
+		//If the entire message has been transmitted terminate the SPI data transfer by pulling Chip Select low
+		if (SPIcount==2){
+ 412:	82 30       	cpi	r24, 0x02	; 2
+ 414:	31 f4       	brne	.+12     	; 0x422 <__LOCK_REGION_LENGTH__+0x22>
+			PORTB |= (1<<PE4);//Switch CS_TYPK_1 off
+ 416:	85 b1       	in	r24, 0x05	; 5
+ 418:	80 61       	ori	r24, 0x10	; 16
+ 41a:	85 b9       	out	0x05, r24	; 5
+			PORTB &= ~(1<<PE5);//Switch CS_TYPK_2 on
+ 41c:	85 b1       	in	r24, 0x05	; 5
+ 41e:	8f 7d       	andi	r24, 0xDF	; 223
+ 420:	85 b9       	out	0x05, r24	; 5
+		}
+		if (SPIcount>=4){
+ 422:	80 91 0c 01 	lds	r24, 0x010C	; 0x80010c <SPIcount>
+ 426:	84 30       	cpi	r24, 0x04	; 4
+ 428:	48 f0       	brcs	.+18     	; 0x43c <__LOCK_REGION_LENGTH__+0x3c>
+			PORTB |= (1<<PB0);//Switch SS off, High=off, Low=on
+ 42a:	85 b1       	in	r24, 0x05	; 5
+ 42c:	81 60       	ori	r24, 0x01	; 1
+ 42e:	85 b9       	out	0x05, r24	; 5
+			PORTB |= (1<<PE5);//Switch CS_TYPK_2 off
+ 430:	85 b1       	in	r24, 0x05	; 5
+ 432:	80 62       	ori	r24, 0x20	; 32
+ 434:	85 b9       	out	0x05, r24	; 5
+
+			SPIcount=0;//Resetting counter for next SPI transmission
+ 436:	10 92 0c 01 	sts	0x010C, r1	; 0x80010c <SPIcount>
+ 43a:	02 c0       	rjmp	.+4      	; 0x440 <__LOCK_REGION_LENGTH__+0x40>
+		}
+		else{
+		//Initiate the next SPI transmission to get the remaining Bytes
+		SPDR=0x11; //send empty byte to initiate data Transmission		
+ 43c:	81 e1       	ldi	r24, 0x11	; 17
+ 43e:	8e bd       	out	0x2e, r24	; 46
+		}
+ 440:	ff 91       	pop	r31
+ 442:	ef 91       	pop	r30
+ 444:	9f 91       	pop	r25
+ 446:	8f 91       	pop	r24
+ 448:	0f 90       	pop	r0
+ 44a:	0b be       	out	0x3b, r0	; 59
+ 44c:	0f 90       	pop	r0
+ 44e:	0f be       	out	0x3f, r0	; 63
+ 450:	0f 90       	pop	r0
+ 452:	1f 90       	pop	r1
+ 454:	18 95       	reti
+
+00000456 <_exit>:
+ 456:	f8 94       	cli
+
+00000458 <__stop_program>:
+ 458:	ff cf       	rjmp	.-2      	; 0x458 <__stop_program>
