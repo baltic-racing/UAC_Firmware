@@ -19,7 +19,7 @@ void port_config(){
 	PORTB = 0| (1<<PB6);									//switch 3,3V enable off as we currently use nothing with 3,3V																		
 }
 
-void sys_tick(){
+void sys_tick_heart(){
 	PORTA ^= 1<<PA1; //toggling the Status of PA1 to make the Heart LED blink every SYStick
 }
 
