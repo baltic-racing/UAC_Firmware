@@ -45,6 +45,7 @@
 void SPI_MasterInit();
 void SPI_SlaveInit(void);
 char SPI_SlaveReceive(void);
+uint8_t SPI_transfer(uint8_t data);
 
 //ISR(SPI_STC_vect);
 

@@ -15,7 +15,7 @@
 
 typedef enum {
 	TK1,
-	TK2,
+	TK2
 } TK_Channel;
 
 uint16_t temp_calc(double ntc_adc);

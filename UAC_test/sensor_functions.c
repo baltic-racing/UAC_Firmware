@@ -12,16 +12,6 @@
 #include <math.h>
 #include <util/delay.h>
 
-
-float beta = 3450.0f;				// optimized between 0-100°C
-float R_25C = 10000.0f;				// restistance at 25°C
-float T_25C = 298.15f;
-float VCC = 5.0f;
-float ADC_max = 1023.0f;
-float R_i = 3300.0f;
-
-
-
 // Typ K temperature
 float read_TK_temperature(TK_Channel channel) {
 	uint8_t high_byte = 0;
@@ -34,8 +24,12 @@ float read_TK_temperature(TK_Channel channel) {
 		case TK2: SS_TK2_LOW(); break;
 	}
 
-	high_byte = SPI_transfer(0x00);
-	low_byte  = SPI_transfer(0x00);
+	//SPDR = 0x00;
+	//while (!(SPSR & (1 << SPIF)));
+	//high_byte = SPDR;
+	
+	//high_byte = SPI_transfer(0x00);
+	//low_byte  = SPI_transfer(0x00);
 
 	switch(channel) {
 		case TK1: SS_TK1_HIGH(); break;

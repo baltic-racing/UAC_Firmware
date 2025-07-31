@@ -25,7 +25,7 @@ void SPI_MasterInit()
 	SPI_Control_Reg |= (1<<SPI_Enable) | (1<<SPI_Master) | (1<<SPI_Relation1) | (0<<SPI_Relation0);
 	
 	//Set all SS High
-	PORTE |= (1<<SS_TK1) | (1<<SS_TK2);
+	PORTB |= (1<<SS_TK1) | (1<<SS_TK2);
 }
 
 void SPI_SlaveInit()
@@ -50,6 +50,12 @@ char SPI_SlaveReceive()											// Use with care -> stop the uC
 	/* Return data register */									//
 	return SPI_Data_Reg;										//
 }																//
+
+uint8_t SPI_transfer(uint8_t data){
+	SPDR = data;
+	while (!(SPSR & (1 << SPIF)));
+	return SPDR;
+}
 
 //ISR(SPI_STC_vect)
 //{

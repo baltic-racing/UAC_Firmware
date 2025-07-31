@@ -34,13 +34,14 @@ int main(void)
 		if(TIME_PASSED_1_MS)
 		{
 			time_1ms = sys_time;
+			
 
 		} // end of 1ms
 	
 		if(TIME_PASSED_10_MS)
 		{
 			//adc_start_conversion();
-		
+			
 			time_10ms = sys_time;
 		
 		} // end of 10ms
@@ -54,6 +55,10 @@ int main(void)
 			//_delay_ms(100);
 			//PORTB |= (1<<SS_TK1);//Switch SS_TYPK_1 off (High)
 			
+			
+			
+			
+			
 			// CAN bus
 			UAC0_databytes[0]	=	0														;	//lsb
 			UAC0_databytes[1]	=	0														;	//msb
@@ -65,16 +70,20 @@ int main(void)
 			UAC0_databytes[7]	=	0														;
 			
 			can_tx(&can_UAC0_mob, UAC0_databytes);
+			sys_tick_heart();
+			
 			
 			time_100ms = sys_time;
 		
-			sys_tick_heart();
+			
 		
 		} // end of 100ms
 	
 		if (TIME_PASSED_200_MS)
 		{
+			TK1_temp = (uint16_t)read_TK_temperature(TK2);
 			time_200ms = sys_time;
+			
 		
 		} // end of 200ms
 	}
