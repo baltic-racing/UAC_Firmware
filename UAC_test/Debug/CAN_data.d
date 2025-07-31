@@ -1,4 +1,4 @@
-main.d main.o: .././main.c .././main.h \
+CAN_data.d CAN_data.o: .././CAN_data.c .././CAN_data.h \
  c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
@@ -10,14 +10,9 @@ main.d main.o: .././main.c .././main.h \
  c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\version.h \
  c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h \
- c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
- c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
- c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
- .././adc_functions.h .././misc_Functions.h .././SPI_lib_light.h \
- .././canlib.h .././CAN_data.h .././sensor_functions.h
+ .././canlib.h
 
-.././main.h:
+.././CAN_data.h:
 
 c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -41,22 +36,4 @@ c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering
 
 c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
 
-c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\interrupt.h:
-
-c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h:
-
-c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h:
-
-c:\users\marek\documents\stralsund\studium\ -\ bachelor\ motorsport\ engineering\studien_programme\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
-
-.././adc_functions.h:
-
-.././misc_Functions.h:
-
-.././SPI_lib_light.h:
-
 .././canlib.h:
-
-.././CAN_data.h:
-
-.././sensor_functions.h:

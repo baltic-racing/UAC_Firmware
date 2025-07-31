@@ -15,6 +15,8 @@
 #include "misc_Functions.h"
 #include "SPI_lib_light.h"
 #include "canlib.h"
+#include "CAN_data.h"
+#include "sensor_functions.h"
 
 //	Variables
 extern volatile unsigned long sys_time;

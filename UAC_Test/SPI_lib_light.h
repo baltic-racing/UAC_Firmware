@@ -13,26 +13,34 @@
 
 #define MOSI PB2							//Start: individual configuration
 #define MISO PB3
-#define SCK PB1							
+#define SCK PB1					
 #define SS_TK1 PB4
 #define SS_TK2 PB5							//End
 
 #define SPI_Control_Reg SPCR
-#define SPI_Interrupt_Enable SPIE
-#define SPI_Enable SPE
-#define SPI_Data_Order DORD
-#define SPI_Master MSTR
-#define SPI_Clock_Polarity CPOL
-#define SPI_Clock_Phase CPHA
-#define SPI_Relation0 SPR0				// Attention, this also affects the clock frequency [see Table SPI_1]
-#define SPI_Relation1 SPR1				// Attention, this also affects the clock frequency [see Table SPI_1]
+	#define SPI_Interrupt_Enable SPIE
+	#define SPI_Enable SPE
+	#define SPI_Data_Order DORD
+	#define SPI_Master MSTR
+	#define SPI_Clock_Polarity CPOL
+	#define SPI_Clock_Phase CPHA
+	#define SPI_Relation0 SPR0				// Attention, this also affects the clock frequency [see Table SPI_1]
+	#define SPI_Relation1 SPR1				// Attention, this also affects the clock frequency [see Table SPI_1]
 
 #define SPI_Status_Reg SPSR
-#define SPI_Interrupft_Flag SPIF
-#define SPI_Collision_Flag WCOL
-#define SPI_Double_Speed SPI2X			// Attention, this also affects the clock frequency [see Table SPI_1]
+	#define SPI_Interrupft_Flag SPIF
+	#define SPI_Collision_Flag WCOL
+	#define SPI_Double_Speed SPI2X			// Attention, this also affects the clock frequency [see Table SPI_1]
 	
 #define SPI_Data_Reg SPDR
+
+
+#define SS_TK1_LOW() (PORTB &= ~(1 << SS_TK1))
+#define SS_TK1_HIGH() (PORTB |= (1 << SS_TK1))
+#define SS_TK2_LOW() (PORTB &= ~(1 << SS_TK2))
+#define SS_TK2_HIGH() (PORTB |= (1 << SS_TK2))
+//#define LEFT 0x01
+//#define RIGHT 0x03
 
 void SPI_MasterInit();
 void SPI_SlaveInit(void);

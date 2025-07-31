@@ -39,8 +39,10 @@ SUBDIRS :=
 C_SRCS +=  \
 ../adc_functions.c \
 ../canlib.c \
+../CAN_data.c \
 ../main.c \
 ../misc_functions.c \
+../sensor_functions.c \
 ../SPI_lib_light.c
 
 
@@ -53,34 +55,42 @@ ASM_SRCS +=
 OBJS +=  \
 adc_functions.o \
 canlib.o \
+CAN_data.o \
 main.o \
 misc_functions.o \
+sensor_functions.o \
 SPI_lib_light.o
 
 OBJS_AS_ARGS +=  \
 adc_functions.o \
 canlib.o \
+CAN_data.o \
 main.o \
 misc_functions.o \
+sensor_functions.o \
 SPI_lib_light.o
 
 C_DEPS +=  \
 adc_functions.d \
 canlib.d \
+CAN_data.d \
 main.d \
 misc_functions.d \
+sensor_functions.d \
 SPI_lib_light.d
 
 C_DEPS_AS_ARGS +=  \
 adc_functions.d \
 canlib.d \
+CAN_data.d \
 main.d \
 misc_functions.d \
+sensor_functions.d \
 SPI_lib_light.d
 
-OUTPUT_FILE_PATH +=UAC_Test.elf
+OUTPUT_FILE_PATH +=UAC_TY25.elf
 
-OUTPUT_FILE_PATH_AS_ARGS +=UAC_Test.elf
+OUTPUT_FILE_PATH_AS_ARGS +=UAC_TY25.elf
 
 ADDITIONAL_DEPENDENCIES:=
 
@@ -106,6 +116,13 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
+./CAN_data.o: .././CAN_data.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -O0 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=at90can128 -B "C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\at90can128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 ./main.o: .././main.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
@@ -114,6 +131,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./misc_functions.o: .././misc_functions.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -O0 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=at90can128 -B "C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\at90can128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./sensor_functions.o: .././sensor_functions.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -O0 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=at90can128 -B "C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\at90can128" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
@@ -153,13 +177,13 @@ all: $(OUTPUT_FILE_PATH) $(ADDITIONAL_DEPENDENCIES)
 $(OUTPUT_FILE_PATH): $(OBJS) $(USER_OBJS) $(OUTPUT_FILE_DEP) $(LIB_DEP) $(LINKER_SCRIPT_DEP)
 	@echo Building target: $@
 	@echo Invoking: AVR/GNU Linker : 5.4.0
-	$(QUOTE)C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="UAC_Test.map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mrelax -mmcu=at90can128 -B "C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\at90can128"  
+	$(QUOTE)C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE) -o$(OUTPUT_FILE_PATH_AS_ARGS) $(OBJS_AS_ARGS) $(USER_OBJS) $(LIBS) -Wl,-Map="UAC_TY25.map" -Wl,--start-group -Wl,-lm  -Wl,--end-group -Wl,--gc-sections -mrelax -mmcu=at90can128 -B "C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\at90can128"  
 	@echo Finished building target: $@
-	"C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "UAC_Test.elf" "UAC_Test.hex"
-	"C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "UAC_Test.elf" "UAC_Test.eep" || exit 0
-	"C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objdump.exe" -h -S "UAC_Test.elf" > "UAC_Test.lss"
-	"C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O srec -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures "UAC_Test.elf" "UAC_Test.srec"
-	"C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-size.exe" "UAC_Test.elf"
+	"C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O ihex -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures  "UAC_TY25.elf" "UAC_TY25.hex"
+	"C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -j .eeprom  --set-section-flags=.eeprom=alloc,load --change-section-lma .eeprom=0  --no-change-warnings -O ihex "UAC_TY25.elf" "UAC_TY25.eep" || exit 0
+	"C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objdump.exe" -h -S "UAC_TY25.elf" > "UAC_TY25.lss"
+	"C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-objcopy.exe" -O srec -R .eeprom -R .fuse -R .lock -R .signature -R .user_signatures "UAC_TY25.elf" "UAC_TY25.srec"
+	"C:\Users\Marek\Documents\Stralsund\Studium - Bachelor Motorsport Engineering\Studien_Programme\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-size.exe" "UAC_TY25.elf"
 	
 	
 
@@ -171,5 +195,5 @@ $(OUTPUT_FILE_PATH): $(OBJS) $(USER_OBJS) $(OUTPUT_FILE_DEP) $(LIB_DEP) $(LINKER
 clean:
 	-$(RM) $(OBJS_AS_ARGS) $(EXECUTABLES)  
 	-$(RM) $(C_DEPS_AS_ARGS)   
-	rm -rf "UAC_Test.elf" "UAC_Test.a" "UAC_Test.hex" "UAC_Test.lss" "UAC_Test.eep" "UAC_Test.map" "UAC_Test.srec" "UAC_Test.usersignatures"
+	rm -rf "UAC_TY25.elf" "UAC_TY25.a" "UAC_TY25.hex" "UAC_TY25.lss" "UAC_TY25.eep" "UAC_TY25.map" "UAC_TY25.srec" "UAC_TY25.usersignatures"
 	

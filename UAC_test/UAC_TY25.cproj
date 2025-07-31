@@ -13,7 +13,7 @@
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
     <AssemblyName>UAC_Test</AssemblyName>
-    <Name>UAC_Test</Name>
+    <Name>UAC_TY25</Name>
     <RootNamespace>UAC_Test</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
@@ -149,6 +149,12 @@
     <Compile Include="canlib.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="CAN_data.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CAN_data.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
@@ -159,6 +165,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="misc_functions.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="sensor_functions.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="sensor_functions.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="SPI_lib_light.c">
