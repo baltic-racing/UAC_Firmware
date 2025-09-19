@@ -22,7 +22,10 @@ void SPI_MasterInit()
 	//PORT_ |= (1 << MISO);
 	
 	//enables SPI, Master-Mode, configure Clock_Select
-	SPI_Control_Reg |= (1<<SPI_Enable) | (1<<SPI_Master) | (1<<SPI_Relation1) | (0<<SPI_Relation0);
+	SPI_Control_Reg |= (1<<SPI_Enable) | (1<<SPI_Master) | (0<<SPI_Relation1) | (1<<SPI_Relation0);
+	
+	//configure Clock_Select [2 MHz]
+	SPI_Status_Reg |= (1<<SPI_Double_Speed);
 	
 	//Set all SS High
 	PORTB |= (1<<SS_TK1) | (1<<SS_TK2);

@@ -10,7 +10,7 @@
 volatile unsigned long sys_time = 0;
 
 void port_config(){
-	DDRA = 0 | (1<<PA0) | (1<<PA1);							//Heart & Error
+	DDRA = 0 | (1<<PA0) | (1<<PA1);							//Error & Heart
 	//DDRB = 0 | (1<<PB6);									//SPI, Setup is done in SPI.C & 3,3V Enbale	
 	//DDRC = 0;												//empty
 	//DDRD = 0;												//Can so all Input Setup is done in CANlib.C
