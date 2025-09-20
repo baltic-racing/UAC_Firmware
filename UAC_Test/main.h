@@ -17,6 +17,14 @@
 #include "CAN_data.h"
 #include "sensor_functions.h"
 
+// Constants
+#define ADC_MAX_VALUE 1023  // 10-bit ADC maximum value
+#define ADC_VOLTAGE_REF 5.0 // Reference voltage for ADC
+#define ZERO_G_VOLTAGE 2.5  // Voltage at 0g from the sensor
+#define SENSITIVITY 0.02    // Sensor sensitivity in V/g
+#define MAX_G 100.0         // Maximum g value for the sensor
+
+
 //	Variables
 extern volatile unsigned long sys_time;
 
@@ -31,7 +39,9 @@ volatile uint8_t Temp_Fluid_Fail = 0;
 
 uint8_t deadend_counter = 0;
 
-
+uint16_t adc_acceleration = 0;
+uint16_t acceleration = 0;
+uint8_t sign_bit = 0;
 
 //	Macros
 #define TIME_PASSED_1_MS	(sys_time - time_1ms) >= 1

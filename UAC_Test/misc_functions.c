@@ -15,7 +15,7 @@ void port_config(){
 	//DDRC = 0;												//empty
 	//DDRD = 0;												//Can so all Input Setup is done in CANlib.C
 	//DDRE = 0;												//empty
-	//DDRF = 0;												//mark analog inputs on Port F as input		
+	DDRF &=	~(1<<PF0);										//mark analog inputs on Port F as input		
 	//PORTB = 0 | (1<<PB6);									//switch 3,3V enable off as we currently use nothing with 3,3V																		
 }
 
