@@ -13,13 +13,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-typedef enum {
-	TK1,
-	TK2
-} TK_Channel;
-
-uint16_t temp_calc(double ntc_adc);
-float read_max6675(void);
-float read_TK_temperature(TK_Channel channel);
+uint16_t read_brake_temp(uint8_t channel);
 
 #endif

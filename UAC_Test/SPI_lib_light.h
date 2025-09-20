@@ -15,8 +15,8 @@
 #define SCK PB1				
 #define MOSI PB2						
 #define MISO PB3
-#define SS_TK1 PB4
-#define SS_TK2 PB5					//End				
+#define SS_Typ_K1 PB4
+#define SS_Typ_K2 PB5					//End				
 
 
 #define SPI_Control_Reg SPCR
@@ -37,16 +37,15 @@
 #define SPI_Data_Reg SPDR
 
 
-#define SS_TK1_LOW() (PORTB &= ~(1 << SS_TK1))
-#define SS_TK1_HIGH() (PORTB |= (1 << SS_TK1))
-#define SS_TK2_LOW() (PORTB &= ~(1 << SS_TK2))
-#define SS_TK2_HIGH() (PORTB |= (1 << SS_TK2))
-//#define LEFT 0x01
-//#define RIGHT 0x03
+#define SS_Typ_K1_LOW() (PORTB &= ~(1 << SS_Typ_K1))
+#define SS_Typ_K1_HIGH() (PORTB |= (1 << SS_Typ_K1))
+#define SS_Typ_K2_LOW() (PORTB &= ~(1 << SS_Typ_K2))
+#define SS_Typ_K2_HIGH() (PORTB |= (1 << SS_Typ_K2))
 
 void SPI_MasterInit();
 void SPI_SlaveInit(void);
 char SPI_SlaveReceive(void);
+
 uint8_t SPI_transfer(uint8_t data);
 
 //ISR(SPI_STC_vect);

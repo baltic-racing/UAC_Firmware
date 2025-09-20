@@ -12,10 +12,10 @@ extern volatile uint16_t brake_disc_temp;
 void SPI_MasterInit()
 {
 	//Set MOSI, SCK and SS(PB0)
-	DDRB |= (1<<MOSI) | (1<<SCK) |	(1<<SS_REAL);
+	DDRB |= (1<<MOSI) | (1<<SCK) | (1<<SS_REAL);
 	
 	//SS as output
-	DDRB |= (1<<SS_TK1) | (1<<SS_TK2);
+	DDRB |= (1<<SS_Typ_K1) | (1<<SS_Typ_K2);
 	
 	//Set MISO as input
 	DDRB &= ~(1<<MISO);
@@ -30,7 +30,7 @@ void SPI_MasterInit()
 	SPI_Status_Reg |= (1<<SPI_Double_Speed);
 	
 	//Set all SS High
-	PORTB |= (1<<SS_TK1) | (1<<SS_TK2);
+	PORTB |= (1<<SS_Typ_K1) | (1<<SS_Typ_K2);
 }
 
 void SPI_SlaveInit()
@@ -57,8 +57,21 @@ char SPI_SlaveReceive()											// Use with care -> stop the uC
 }																//
 
 uint8_t SPI_transfer(uint8_t data){
+	uint8_t deadend_counter = 0;
 	SPDR = data;
-	while (!(SPSR & (1 << SPIF)));
+	
+	while(!(SPSR & (1<<SPIF)))					//wait for SPI_Interrupt_Flag
+	{
+		if(++deadend_counter >= 200)				//for case that SPIF isnt send
+		{
+			PORTA |= (1<<PA0);					//Enter Error state cause of failing SPI_Interrrupt_Flag  [Error-LED = On]
+			break;								// quit while-loop
+		}
+		else
+		{
+			PORTA &= ~(1<<PA0);					//Leave Error state cause set SPI_Interrrupt_Flag  [Error-LED = Off]
+		}
+	}
 	return SPDR;
 }
 

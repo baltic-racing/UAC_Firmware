@@ -10,28 +10,34 @@
 #include "SPI_lib_light.h"
 #include <avr/io.h>
 #include <math.h>
-#include <util/delay.h>
+
 
 // Typ K temperature
-float read_TK_temperature(TK_Channel channel) {
-	uint8_t high_byte = 0;
-	uint8_t low_byte = 0;
-	uint16_t raw_value = 0;
-	float temperature = 0.0;
-
-	switch(channel) {
-		case TK1: SS_TK1_LOW(); break;
-		case TK2: SS_TK2_LOW(); break;
+uint16_t read_brake_temp(uint8_t Typ_K)
+{
+	volatile uint16_t brake_temp_msb = 0;
+	volatile uint16_t brake_temp_lsb = 0;
+	volatile uint16_t brake_temp = 0;
+	volatile uint16_t brake_temp_normal = 0;
+	volatile uint16_t brake_temp_Grad_C = 0;
+	
+	switch(Typ_K) {
+		case 0: SS_Typ_K1_LOW(); break;
+		case 1: SS_Typ_K2_LOW(); break;
 	}
 
+	brake_temp_msb = SPI_transfer(0x00);
+	brake_temp_lsb = SPI_transfer(0x00);
 
-	switch(channel) {
-		case TK1: SS_TK1_HIGH(); break;
-		case TK2: SS_TK2_HIGH(); break;
+	switch(Typ_K) {
+		case 0: SS_Typ_K1_HIGH(); break;
+		case 1: SS_Typ_K2_HIGH(); break;
 	}
+	
+	brake_temp = (brake_temp_lsb | (brake_temp_msb << 8));	// Bit D0 bis D2 für Temperatur uninteressant
+	brake_temp_normal = (brake_temp >> 3);						// shift sodass die 12 letzten Bits die Temperatur anzeigen
 
-	raw_value = (high_byte << 8) | low_byte;
-	temperature = ((raw_value >> 3) & 0x7FF) * 0.25;
-
-	return temperature * 100;
+	brake_temp_Grad_C = brake_temp_normal * 25;					// 25 = 100/4 (*100 für 2 Dezimalstellen, /4 für auflösung)
+	
+	return brake_temp_Grad_C;
 }
