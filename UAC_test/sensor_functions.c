@@ -24,12 +24,6 @@ float read_TK_temperature(TK_Channel channel) {
 		case TK2: SS_TK2_LOW(); break;
 	}
 
-	//SPDR = 0x00;
-	//while (!(SPSR & (1 << SPIF)));
-	//high_byte = SPDR;
-	
-	//high_byte = SPI_transfer(0x00);
-	//low_byte  = SPI_transfer(0x00);
 
 	switch(channel) {
 		case TK1: SS_TK1_HIGH(); break;

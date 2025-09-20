@@ -12,6 +12,7 @@ uint16_t TK1_temp = 0;
 uint16_t TK2_temp = 0;
 
 uint8_t deadend_counter = 0;
+uint8_t zweitakt = 0;
 
 extern uint8_t UAC0_databytes[8];
 
@@ -61,63 +62,85 @@ int main(void)
 	
 		if (TIME_PASSED_200_MS)
 		{
-			TK1_temp = (uint16_t)read_TK_temperature(TK2);
 			
-			// SPI communication
-			PORTB &= ~(1<<SS_TK1);//Switch SS_TYPK_1 on (Low)
+			// CAN bus
+			UAC0_databytes[0]	=	0x66													;	//lsb
+			UAC0_databytes[1]	=	0x66													;	//msb
+			UAC0_databytes[2]	=	(brake_disc_temp_Grad_C	>>	8)	& 0x3F					;	//msb // & 0x3F da ersten 4 bit nicht zur Temperatur gehören
+			UAC0_databytes[3]	=	(brake_disc_temp_Grad_C)	& 0xFF						;	//lsb
+			UAC0_databytes[4]	=	0x66													;
+			UAC0_databytes[5]	=	0x66													;
+			UAC0_databytes[6]	=	0x66													;
+			UAC0_databytes[7]	=	thermo_open												;	// 1 = no typ K connected
 			
-			SPDR = 0x00;
-			deadend_counter = 0;
+			can_tx(&can_UAC0_mob, UAC0_databytes);
+			
+			time_200ms = sys_time;				
+		} // end of 200ms	
+			
+			
+			
+		if (TIME_PASSED_1000_MS)
+		{
+		// SPI communication
+				PORTB &= ~(1<<SS_TK1);						//Switch SS_TYPK_1 on (Low)
 				
-			while(!(SPSR & (1<<SPIF)))
+				//start msb-read
+					
+				SPDR = 0x00;
+				deadend_counter = 0;
+						
+				while(!(SPSR & (1<<SPIF)))					//wait for SPI_Interrupt_Flag
 				{
-					if(++deadend_counter >= 200)
-						{
-							PORTA |= (1<<PA0);					//Enter Error state cause of failing SPI_Interrrupt_Flag  [Error-LED = On]
-							
-							PORTB |= (1<<SS_TK1);				//Switch SS_TYPK_1 off (High)
-							break;;
-						}
+					deadend_counter++ ;
+						
+					if(deadend_counter >= 200)				//for case that SPIF isnt send 
+					{
+						PORTA |= (1<<PA0);					//Enter Error state cause of failing SPI_Interrrupt_Flag  [Error-LED = On]
+						break;								// quit while-loop
+					}
 					else
 					{
 						PORTA &= ~(1<<PA0);					//Leave Error state cause set SPI_Interrrupt_Flag  [Error-LED = Off]
 					}
 				}
-			brake_disc_temp = ((uint16_t)SPDR << 8);		//MSB
-			
-			SPDR = 0x00;
-			while(!(SPSR & (1<<SPIF)))
-			{
-				if(++deadend_counter >= 200)
-				{
-					PORTA |= (1<<PA0);					//Enter Error state cause of failing SPI_Interrrupt_Flag  [Error-LED = On]
 					
-					PORTB |= (1<<SS_TK1);				//Switch SS_TYPK_1 off (High)
-					break;;
-				}
-				else
+				brake_disc_temp_msb = SPDR;					//msb
+				
+				//start lsb-read
+					
+				SPDR = 0x00;
+				deadend_counter = 0;
+					
+				while(!(SPSR & (1<<SPIF)))					//wait for SPI_Interrupt_Flag
 				{
-					PORTA &= ~(1<<PA0);					//Leave Error state cause set SPI_Interrrupt_Flag  [Error-LED = Off]
+					deadend_counter++ ;
+						
+					if(deadend_counter >= 200)				//for case that SPIF isnt send
+					{
+						PORTA |= (1<<PA0);					//Enter Error state cause of failing SPI_Interrrupt_Flag  [Error-LED = On]
+						break;
+					}
+					else
+					{
+						PORTA &= ~(1<<PA0);					//Leave Error state cause set SPI_Interrrupt_Flag  [Error-LED = Off]
+					}
 				}
-			}
-			brake_disc_temp = SPDR;							//LSB
-			
-			PORTB |= (1<<SS_TK1);							//Switch SS_TYPK_1 off (High)
-			
-			
-			// CAN bus
-			UAC0_databytes[0]	=	0x66													;	//lsb
-			UAC0_databytes[1]	=	0x66													;	//msb
-			UAC0_databytes[2]	=	(brake_disc_temp)	& 0xFF								;	//lsb
-			UAC0_databytes[3]	=	(brake_disc_temp	>>	8)	& 0xFF						;	//msb
-			UAC0_databytes[4]	=	0x66													;
-			UAC0_databytes[5]	=	0x66													;
-			UAC0_databytes[6]	=	0x66													;
-			UAC0_databytes[7]	=	0x66													;
-			
-			can_tx(&can_UAC0_mob, UAC0_databytes);
-			
-			time_200ms = sys_time;				
-		} // end of 200ms
+					
+				brake_disc_temp_lsb = SPDR;					//lsb
+									
+				PORTB |= (1<<SS_TK1);													//Switch SS_TYPK_1 off (High)
+					
+				brake_disc_temp = (brake_disc_temp_lsb | (brake_disc_temp_msb << 8));	// Bit D0 bis D2 für Temperatur uninteressant
+				brake_disc_temp_normal = (brake_disc_temp >> 3);						// shift sodass die 12 letzten Bits die Temperatur anzeigen
+					
+				thermo_open = ((brake_disc_temp_lsb >> 2) & 0x1) ;						// check if TYP K is connected
+				
+				brake_disc_temp_Grad_C = brake_disc_temp_normal * 25;					// 25 = 100/4 (*100 für 2 Dezimalstellen, /4 für auflösung)
+				
+					
+				
+			time_1000ms = sys_time;
+		} // end of 1000ms
 	}
 }

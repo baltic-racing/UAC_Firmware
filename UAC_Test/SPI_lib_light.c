@@ -11,8 +11,10 @@ extern volatile uint16_t brake_disc_temp;
 
 void SPI_MasterInit()
 {
-	//Set MOSI, SCK and all SS as output
-	DDRB |= (1<<MOSI) | (1<<SCK);
+	//Set MOSI, SCK and SS(PB0)
+	DDRB |= (1<<MOSI) | (1<<SCK) |	(1<<SS_REAL);
+	
+	//SS as output
 	DDRB |= (1<<SS_TK1) | (1<<SS_TK2);
 	
 	//Set MISO as input

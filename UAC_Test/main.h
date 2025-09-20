@@ -26,7 +26,13 @@ volatile unsigned long time_100ms = 0;
 volatile unsigned long time_200ms = 0;
 volatile unsigned long time_1000ms = 0;
 
-volatile uint16_t brake_disc_temp;
+volatile uint16_t brake_disc_temp_msb = 0;
+volatile uint16_t brake_disc_temp_lsb = 0;
+volatile uint16_t brake_disc_temp = 0;
+volatile uint16_t brake_disc_temp_normal = 0;
+volatile uint16_t brake_disc_temp_Grad_C = 0;
+
+volatile uint8_t thermo_open = 0;
 
 //	Macros
 

@@ -11,11 +11,13 @@
 #ifndef SPI_LIB_LIGHT_H_
 #define SPI_LIB_LIGHT_H_
 
-#define MOSI PB2							//Start: individual configuration
+#define SS_REAL PB0						//Start: individual configuration
+#define SCK PB1				
+#define MOSI PB2						
 #define MISO PB3
-#define SCK PB1					
 #define SS_TK1 PB4
-#define SS_TK2 PB5							//End
+#define SS_TK2 PB5					//End				
+
 
 #define SPI_Control_Reg SPCR
 	#define SPI_Interrupt_Enable SPIE
