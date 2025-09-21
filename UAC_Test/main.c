@@ -28,13 +28,13 @@ int main(void)
 	SPI_MasterInit();
 	
 	struct CAN_MOB can_UAC0_mob;
-	can_UAC0_mob.mob_id = 0x730;
+	can_UAC0_mob.mob_id = 0x700;
 	can_UAC0_mob.mob_idmask = 0xFFFF;//sent
 	can_UAC0_mob.mob_number = 0;
 	uint8_t UAC0_databytes[8] = {0};
 		
 	struct CAN_MOB can_UAC1_mob;
-	can_UAC1_mob.mob_id = 0x731;
+	can_UAC1_mob.mob_id = 0x701;
 	can_UAC1_mob.mob_idmask = 0xFFFF;//sent
 	can_UAC1_mob.mob_number = 0;
 	uint8_t UAC1_databytes[8] = {0};
