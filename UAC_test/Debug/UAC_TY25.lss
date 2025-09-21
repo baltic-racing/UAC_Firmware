@@ -752,13 +752,13 @@ int main(void)
  4c4:	d7 df       	rcall	.-82     	; 0x474 <CAN_Init_Messages>
 	CAN_Init_Messages();
  4c6:	75 d2       	rcall	.+1258   	; 0x9b2 <SPI_MasterInit>
- 4c8:	80 e0       	ldi	r24, 0x00	; 0
+ 4c8:	80 e2       	ldi	r24, 0x20	; 32
 	SPI_MasterInit();
  4ca:	97 e0       	ldi	r25, 0x07	; 7
  4cc:	9e 87       	std	Y+14, r25	; 0x0e
 	
 	struct CAN_MOB can_UAC0_mob;
-	can_UAC0_mob.mob_id = 0x700;
+	can_UAC0_mob.mob_id = 0x720;
  4ce:	8d 87       	std	Y+13, r24	; 0x0d
  4d0:	8f ef       	ldi	r24, 0xFF	; 255
  4d2:	9f ef       	ldi	r25, 0xFF	; 255
@@ -776,12 +776,12 @@ int main(void)
  4e4:	11 92       	st	Z+, r1
  4e6:	ea 94       	dec	r14
  4e8:	e9 f7       	brne	.-6      	; 0x4e4 <main+0x44>
- 4ea:	81 e0       	ldi	r24, 0x01	; 1
+ 4ea:	81 e2       	ldi	r24, 0x21	; 33
  4ec:	97 e0       	ldi	r25, 0x07	; 7
  4ee:	9b 8f       	std	Y+27, r25	; 0x1b
 		
 	struct CAN_MOB can_UAC1_mob;
-	can_UAC1_mob.mob_id = 0x701;
+	can_UAC1_mob.mob_id = 0x721;
  4f0:	8a 8f       	std	Y+26, r24	; 0x1a
  4f2:	8f ef       	ldi	r24, 0xFF	; 255
  4f4:	9f ef       	ldi	r25, 0xFF	; 255
