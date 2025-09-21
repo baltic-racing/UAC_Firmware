@@ -15,8 +15,10 @@ uint8_t channel = 0;
 uint8_t switchi = 0;
 
 extern uint8_t UAC0_databytes[8];
+extern uint8_t UAC1_databytes[8];
 
 extern struct CAN_MOB can_UAC0_mob;
+extern struct CAN_MOB can_UAC1_mob;
 
 int main(void)
 {
@@ -27,18 +29,21 @@ int main(void)
 	CAN_Init_Messages();
 	SPI_MasterInit();
 	
+	
 	struct CAN_MOB can_UAC0_mob;
 	can_UAC0_mob.mob_id = 0x730;
 	can_UAC0_mob.mob_idmask = 0xFFFF;//sent
 	can_UAC0_mob.mob_number = 0;
+	
 	uint8_t UAC0_databytes[8] = {0};
-		
+	
 	struct CAN_MOB can_UAC1_mob;
 	can_UAC1_mob.mob_id = 0x731;
 	can_UAC1_mob.mob_idmask = 0xFFFF;//sent
-	can_UAC1_mob.mob_number = 0;
-	uint8_t UAC1_databytes[8] = {0};
+	can_UAC1_mob.mob_number = 1;
 	
+	uint8_t UAC1_databytes[8] = {0};
+		
 	sei();
 
 	while (1)
@@ -121,8 +126,8 @@ int main(void)
 			}
 			
 			// CAN bus
-			UAC1_databytes[0]	=	(Typ_K2_temp	>>	8)	&	0xFF							;	//lsb
-			UAC1_databytes[1]	=	(Typ_K2_temp)			&	0xFF							;	//msb
+			UAC1_databytes[0]	=	(Typ_K2_temp	>>	8)	&	0xFF							;	//msb
+			UAC1_databytes[1]	=	(Typ_K2_temp)			&	0xFF							;	//lsb
 			UAC1_databytes[2]	=	(Typ_K1_temp	>>	8)	&	0xFF							;	//msb // & 0x3F da ersten 4 bit (links) nicht zur Temperatur gehören, da 12 bit Auflösung
 			UAC1_databytes[3]	=	(Typ_K1_temp)			&	0xFF							;	//lsb
 			UAC1_databytes[4]	=	0x66														;
