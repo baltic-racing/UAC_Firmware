@@ -48,10 +48,15 @@ void can_cfg(){
 		}
 	}
 
-	CANBT1 = 0x02;// Set Baudrate
-	CANBT2 = 0x0C;// 500kBaud according
-	CANBT3 = 0x37;// to Datasheet S. 267 with 16Mhz Oszi
-
+	//CANBT1 = 0x02;// Set Baudrate
+	//CANBT2 = 0x0C;// 500kBaud according
+	//CANBT3 = 0x37;// to Datasheet S. 267 with 16Mhz Oszi
+	
+	CANBT1 = 0x02;	// Set Baudrate
+	CANBT2 = 0x04;	// 1Mbps Baud according
+	CANBT3 = 0x13;	// to Datasheet S. 265 with 16Mhz Oszi
+	
+	
 	CANGIE = 0;
 
 	CANGCON |= (1<<ENASTB); // Enable CAN

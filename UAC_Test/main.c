@@ -47,8 +47,9 @@ int main(void)
 		{
 			adc_start_conversion();
 			uint16_t adc_value = adc_get_1(); // Get the ADC value from the sensor
-			float voltage =
-			(adc_value / (float)ADC_MAX_VALUE) * ADC_VOLTAGE_REF;
+			
+			float voltage = (adc_value / (float)ADC_MAX_VALUE) * ADC_VOLTAGE_REF;
+			
 			float acceleration = (voltage - ZERO_G_VOLTAGE) / SENSITIVITY;
 
 			// Convert acceleration to a range from -100.0 to +100.0 g
@@ -56,21 +57,18 @@ int main(void)
 
 			// Prepare CAN message
 			uint8_t UAC_databytes[2];
-			if (scaledAcceleration < 0) {
+			if (scaledAcceleration < 0) 
+			
+			{
 				scaledAcceleration = -scaledAcceleration;
-				UAC0_databytes[0] =
-				(uint8_t)(scaledAcceleration & 0xFF); // Lower byte
-				UAC0_databytes[1] =
-				(uint8_t)((scaledAcceleration >> 8) &
-				0x7F); // Higher byte with sign bit cleared
-				UAC0_databytes[1] |=
-				0x80; // Set the sign bit for negative values
-				} else {
-				UAC0_databytes[0] =
-				(uint8_t)(scaledAcceleration & 0xFF); // Lower byte
-				UAC0_databytes[1] =
-				(uint8_t)((scaledAcceleration >> 8) &
-				0x7F); // Higher byte with sign bit cleared
+				UAC0_databytes[0] =	(uint8_t)(scaledAcceleration & 0xFF);			// Lower byte
+				UAC0_databytes[1] = (uint8_t)((scaledAcceleration >> 8) & 0x7F);	// Higher byte with sign bit cleared
+				UAC0_databytes[1] |= 0x80;											// Set the sign bit for negative values
+			}
+			else 
+			{
+				UAC0_databytes[0] = (uint8_t)(scaledAcceleration & 0xFF);			// Lower byte
+				UAC0_databytes[1] = (uint8_t)((scaledAcceleration >> 8) & 0x7F);	// Higher byte with sign bit cleared
 			}
 			
 			// CAN bus
@@ -121,8 +119,8 @@ int main(void)
 			}
 			
 			// CAN bus
-			UAC1_databytes[0]	=	(Typ_K2_temp	>>	8)	&	0xFF							;	//lsb
-			UAC1_databytes[1]	=	(Typ_K2_temp)			&	0xFF							;	//msb
+			UAC1_databytes[0]	=	(Typ_K2_temp	>>	8)	&	0xFF							;	//msb
+			UAC1_databytes[1]	=	(Typ_K2_temp)			&	0xFF							;	//lsb
 			UAC1_databytes[2]	=	(Typ_K1_temp	>>	8)	&	0xFF							;	//msb // & 0x3F da ersten 4 bit (links) nicht zur Temperatur gehören, da 12 bit Auflösung
 			UAC1_databytes[3]	=	(Typ_K1_temp)			&	0xFF							;	//lsb
 			UAC1_databytes[4]	=	0x66														;
