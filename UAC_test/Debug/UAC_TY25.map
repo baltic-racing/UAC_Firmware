@@ -693,16 +693,16 @@ END GROUP
  .debug_abbrev  0x00000d13       0x7a sensor_functions.o
  .debug_abbrev  0x00000d8d       0xb9 SPI_lib_light.o
 
-.debug_line     0x00000000      0xc1a
+.debug_line     0x00000000      0xc1b
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x176 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/at90can128/avr51/crtat90can128.o
  .debug_line    0x00000176      0x134 adc_functions.o
- .debug_line    0x000002aa      0x2be canlib.o
- .debug_line    0x00000568       0xc3 CAN_data.o
- .debug_line    0x0000062b      0x24f main.o
- .debug_line    0x0000087a      0x117 misc_functions.o
- .debug_line    0x00000991      0x113 sensor_functions.o
- .debug_line    0x00000aa4      0x176 SPI_lib_light.o
+ .debug_line    0x000002aa      0x2bf canlib.o
+ .debug_line    0x00000569       0xc3 CAN_data.o
+ .debug_line    0x0000062c      0x24f main.o
+ .debug_line    0x0000087b      0x117 misc_functions.o
+ .debug_line    0x00000992      0x113 sensor_functions.o
+ .debug_line    0x00000aa5      0x176 SPI_lib_light.o
 
 .debug_frame    0x00000000      0x344
  *(.debug_frame)
@@ -714,22 +714,22 @@ END GROUP
  .debug_frame   0x0000027c       0x34 sensor_functions.o
  .debug_frame   0x000002b0       0x94 SPI_lib_light.o
 
-.debug_str      0x00000000      0x823
+.debug_str      0x00000000      0x868
  *(.debug_str)
  .debug_str     0x00000000      0x39f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/at90can128/avr51/crtat90can128.o
  .debug_str     0x0000039f      0x19c adc_functions.o
                                 0x1d0 (size before relaxing)
- .debug_str     0x0000053b       0x87 canlib.o
-                                0x1ef (size before relaxing)
- .debug_str     0x000005c2       0x5a CAN_data.o
+ .debug_str     0x0000053b       0xcc canlib.o
+                                0x1f8 (size before relaxing)
+ .debug_str     0x00000607       0x5a CAN_data.o
                                 0x1f0 (size before relaxing)
- .debug_str     0x0000061c       0xf9 main.o
+ .debug_str     0x00000661       0xf9 main.o
                                 0x2dc (size before relaxing)
- .debug_str     0x00000715       0x4e misc_functions.o
+ .debug_str     0x0000075a       0x4e misc_functions.o
                                 0x1b6 (size before relaxing)
- .debug_str     0x00000763       0x70 sensor_functions.o
+ .debug_str     0x000007a8       0x70 sensor_functions.o
                                 0x1e3 (size before relaxing)
- .debug_str     0x000007d3       0x50 SPI_lib_light.o
+ .debug_str     0x00000818       0x50 SPI_lib_light.o
                                 0x1c9 (size before relaxing)
 
 .debug_loc      0x00000000      0x5a4

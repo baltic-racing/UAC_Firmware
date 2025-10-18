@@ -19,15 +19,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   7 .debug_abbrev 00000e46  00000000  00000000  00002443  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000c1a  00000000  00000000  00003289  2**0
+  8 .debug_line   00000c1b  00000000  00000000  00003289  2**0
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  00000344  00000000  00000000  00003ea4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000823  00000000  00000000  000041e8  2**0
+ 10 .debug_str    00000868  00000000  00000000  000041e8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000005a4  00000000  00000000  00004a0b  2**0
+ 11 .debug_loc    000005a4  00000000  00000000  00004a50  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000d0  00000000  00000000  00004faf  2**0
+ 12 .debug_ranges 000000d0  00000000  00000000  00004ff4  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -136,29 +136,20 @@ Disassembly of section .text:
   b4:	a5 cf       	rjmp	.-182    	; 0x0 <__vectors>
 
 000000b6 <adc_config>:
-// array to store the adc data in, in this case we only have 1 Input
-uint16_t adc_values[1];
-// index var to know which adc will come next
-uint8_t adc_next = 0;
-
-void adc_config(){
   b6:	cf 93       	push	r28
   b8:	df 93       	push	r29
   ba:	cd b7       	in	r28, 0x3d	; 61
   bc:	de b7       	in	r29, 0x3e	; 62
-	ADMUX = (1<<REFS0) | (1<<MUX0); // AREF = AVcc and PF0 (ADC0) as input defined
   be:	8c e7       	ldi	r24, 0x7C	; 124
   c0:	90 e0       	ldi	r25, 0x00	; 0
   c2:	21 e4       	ldi	r18, 0x41	; 65
   c4:	fc 01       	movw	r30, r24
   c6:	20 83       	st	Z, r18
-	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (0<<ADPS0) | (1<<ADIE); // ADEN enables ADC, ADPS0,1,2 for ADC prescaler 16, ADIE enables ADC interrupt // see datasheet page 290
   c8:	8a e7       	ldi	r24, 0x7A	; 122
   ca:	90 e0       	ldi	r25, 0x00	; 0
   cc:	2c e8       	ldi	r18, 0x8C	; 140
   ce:	fc 01       	movw	r30, r24
   d0:	20 83       	st	Z, r18
-	ADCSRA |= (1<<ADSC); //start first conversation
   d2:	8a e7       	ldi	r24, 0x7A	; 122
   d4:	90 e0       	ldi	r25, 0x00	; 0
   d6:	2a e7       	ldi	r18, 0x7A	; 122
@@ -168,7 +159,6 @@ void adc_config(){
   de:	20 64       	ori	r18, 0x40	; 64
   e0:	fc 01       	movw	r30, r24
   e2:	20 83       	st	Z, r18
-	DIDR0 |= 1; //Disabling the Digital Input Buffer on this Port because we only use the ADC Port for Programming and ADC
   e4:	8e e7       	ldi	r24, 0x7E	; 126
   e6:	90 e0       	ldi	r25, 0x00	; 0
   e8:	2e e7       	ldi	r18, 0x7E	; 126
@@ -178,42 +168,32 @@ void adc_config(){
   f0:	21 60       	ori	r18, 0x01	; 1
   f2:	fc 01       	movw	r30, r24
   f4:	20 83       	st	Z, r18
-}
   f6:	00 00       	nop
   f8:	df 91       	pop	r29
   fa:	cf 91       	pop	r28
   fc:	08 95       	ret
 
 000000fe <adc_start_conversion>:
-
-void adc_start_conversion(){
   fe:	cf 93       	push	r28
  100:	df 93       	push	r29
  102:	cd b7       	in	r28, 0x3d	; 61
  104:	de b7       	in	r29, 0x3e	; 62
-	//start next conversion with same config
-	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (0<<ADPS1) | (1<<ADPS0) | (1<<ADIE) | (1<<ADSC); //prescaler to 16 
  106:	8a e7       	ldi	r24, 0x7A	; 122
  108:	90 e0       	ldi	r25, 0x00	; 0
  10a:	2d ec       	ldi	r18, 0xCD	; 205
  10c:	fc 01       	movw	r30, r24
  10e:	20 83       	st	Z, r18
-	//!!! Currently we have to Start the conversion manually with ADSC=1. Normally SMCR should auto trigger the conversion but as of now it does not work. neither do we know if the uC goes into Noise reduction mode
-	SMCR = (1<<SM0)|(0<<SM1)|(0<<SM2); //enable ADC noise reduction mode and starts the conversion
  110:	83 e5       	ldi	r24, 0x53	; 83
  112:	90 e0       	ldi	r25, 0x00	; 0
  114:	22 e0       	ldi	r18, 0x02	; 2
  116:	fc 01       	movw	r30, r24
  118:	20 83       	st	Z, r18
-}
  11a:	00 00       	nop
  11c:	df 91       	pop	r29
  11e:	cf 91       	pop	r28
  120:	08 95       	ret
 
 00000122 <__vector_25>:
-
-ISR(ADC_vect){
  122:	1f 92       	push	r1
  124:	0f 92       	push	r0
  126:	00 90 5f 00 	lds	r0, 0x005F	; 0x80005f <__TEXT_REGION_LENGTH__+0x7e005f>
@@ -231,8 +211,6 @@ ISR(ADC_vect){
  142:	df 93       	push	r29
  144:	cd b7       	in	r28, 0x3d	; 61
  146:	de b7       	in	r29, 0x3e	; 62
-	// store ADC result
-	adc_values[adc_next] = ADC;
  148:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
  14c:	88 2f       	mov	r24, r24
  14e:	90 e0       	ldi	r25, 0x00	; 0
@@ -248,27 +226,19 @@ ISR(ADC_vect){
  162:	fc 01       	movw	r30, r24
  164:	31 83       	std	Z+1, r19	; 0x01
  166:	20 83       	st	Z, r18
-	adc_next++;
  168:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
  16c:	8f 5f       	subi	r24, 0xFF	; 255
  16e:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
-	// reset index var
-	if(adc_next == 1){
  172:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
  176:	81 30       	cpi	r24, 0x01	; 1
  178:	11 f4       	brne	.+4      	; 0x17e <__vector_25+0x5c>
-		adc_next = 0;
  17a:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <__DATA_REGION_ORIGIN__>
-	}
-	// select other ADC Input
-	ADMUX = (1<<REFS0) | adc_next;
  17e:	8c e7       	ldi	r24, 0x7C	; 124
  180:	90 e0       	ldi	r25, 0x00	; 0
  182:	20 91 00 01 	lds	r18, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
  186:	20 64       	ori	r18, 0x40	; 64
  188:	fc 01       	movw	r30, r24
  18a:	20 83       	st	Z, r18
-}
  18c:	00 00       	nop
  18e:	df 91       	pop	r29
  190:	cf 91       	pop	r28
@@ -287,18 +257,12 @@ ISR(ADC_vect){
  1ae:	18 95       	reti
 
 000001b0 <adc_get_1>:
-
-// getter for each adc var
-uint16_t adc_get_1(){
  1b0:	cf 93       	push	r28
  1b2:	df 93       	push	r29
  1b4:	cd b7       	in	r28, 0x3d	; 61
  1b6:	de b7       	in	r29, 0x3e	; 62
-	return adc_values[0];
  1b8:	80 91 19 01 	lds	r24, 0x0119	; 0x800119 <adc_values>
  1bc:	90 91 1a 01 	lds	r25, 0x011A	; 0x80011a <adc_values+0x1>
-	//return 12;
-}
  1c0:	df 91       	pop	r29
  1c2:	cf 91       	pop	r28
  1c4:	08 95       	ret
@@ -481,12 +445,12 @@ uint16_t adc_get_1(){
  312:	20 83       	st	Z, r18
  314:	83 ee       	ldi	r24, 0xE3	; 227
  316:	90 e0       	ldi	r25, 0x00	; 0
- 318:	2c e0       	ldi	r18, 0x0C	; 12
+ 318:	24 e0       	ldi	r18, 0x04	; 4
  31a:	fc 01       	movw	r30, r24
  31c:	20 83       	st	Z, r18
  31e:	84 ee       	ldi	r24, 0xE4	; 228
  320:	90 e0       	ldi	r25, 0x00	; 0
- 322:	27 e3       	ldi	r18, 0x37	; 55
+ 322:	23 e1       	ldi	r18, 0x13	; 19
  324:	fc 01       	movw	r30, r24
  326:	20 83       	st	Z, r18
  328:	8b ed       	ldi	r24, 0xDB	; 219
@@ -691,42 +655,25 @@ void can_tx(struct CAN_MOB *to_send, uint8_t *data){
  472:	08 95       	ret
 
 00000474 <CAN_Init_Messages>:
-uint8_t UAC1_databytes[8];
-
-struct CAN_MOB can_UAC0_mob;
-struct CAN_MOB can_UAC1_mob;
-
-CAN_Init_Messages(){
  474:	cf 93       	push	r28
  476:	df 93       	push	r29
  478:	cd b7       	in	r28, 0x3d	; 61
  47a:	de b7       	in	r29, 0x3e	; 62
-	
-	can_UAC0_mob.mob_id = 0x700;
  47c:	80 e0       	ldi	r24, 0x00	; 0
  47e:	97 e0       	ldi	r25, 0x07	; 7
  480:	90 93 1c 01 	sts	0x011C, r25	; 0x80011c <can_UAC0_mob+0x1>
  484:	80 93 1b 01 	sts	0x011B, r24	; 0x80011b <can_UAC0_mob>
-	can_UAC0_mob.mob_idmask = 0xFFFF; //sent
  488:	8f ef       	ldi	r24, 0xFF	; 255
  48a:	9f ef       	ldi	r25, 0xFF	; 255
  48c:	90 93 1e 01 	sts	0x011E, r25	; 0x80011e <can_UAC0_mob+0x3>
  490:	80 93 1d 01 	sts	0x011D, r24	; 0x80011d <can_UAC0_mob+0x2>
-	can_UAC0_mob.mob_number = 0;
  494:	10 92 1f 01 	sts	0x011F, r1	; 0x80011f <can_UAC0_mob+0x4>
-	
  498:	00 00       	nop
  49a:	df 91       	pop	r29
  49c:	cf 91       	pop	r28
  49e:	08 95       	ret
 
 000004a0 <main>:
-extern uint8_t UAC0_databytes[8];
-
-extern struct CAN_MOB can_UAC0_mob;
-
-int main(void)
-{
  4a0:	ef 92       	push	r14
  4a2:	ff 92       	push	r15
  4a4:	0f 93       	push	r16
@@ -741,36 +688,24 @@ int main(void)
  4b6:	de bf       	out	0x3e, r29	; 62
  4b8:	0f be       	out	0x3f, r0	; 63
  4ba:	cd bf       	out	0x3d, r28	; 61
-	port_config();
  4bc:	8b d1       	rcall	.+790    	; 0x7d4 <port_config>
-	sys_timer_config();
  4be:	b2 d1       	rcall	.+868    	; 0x824 <sys_timer_config>
-	adc_config(); //CHECK WHICH ADC INPUTS CORRESPOND WITH WHAT DATABYTE WE SEND
  4c0:	fa dd       	rcall	.-1036   	; 0xb6 <adc_config>
-	can_cfg();
  4c2:	be de       	rcall	.-644    	; 0x240 <can_cfg>
  4c4:	d7 df       	rcall	.-82     	; 0x474 <CAN_Init_Messages>
-	CAN_Init_Messages();
  4c6:	75 d2       	rcall	.+1258   	; 0x9b2 <SPI_MasterInit>
  4c8:	80 e0       	ldi	r24, 0x00	; 0
-	SPI_MasterInit();
  4ca:	97 e0       	ldi	r25, 0x07	; 7
  4cc:	9e 87       	std	Y+14, r25	; 0x0e
-	
-	struct CAN_MOB can_UAC0_mob;
-	can_UAC0_mob.mob_id = 0x700;
  4ce:	8d 87       	std	Y+13, r24	; 0x0d
  4d0:	8f ef       	ldi	r24, 0xFF	; 255
  4d2:	9f ef       	ldi	r25, 0xFF	; 255
  4d4:	98 8b       	std	Y+16, r25	; 0x10
-	can_UAC0_mob.mob_idmask = 0xFFFF;//sent
  4d6:	8f 87       	std	Y+15, r24	; 0x0f
  4d8:	19 8a       	std	Y+17, r1	; 0x11
  4da:	28 e0       	ldi	r18, 0x08	; 8
  4dc:	ce 01       	movw	r24, r28
-	can_UAC0_mob.mob_number = 0;
  4de:	42 96       	adiw	r24, 0x12	; 18
-	uint8_t UAC0_databytes[8] = {0};
  4e0:	fc 01       	movw	r30, r24
  4e2:	e2 2e       	mov	r14, r18
  4e4:	11 92       	st	Z+, r1
@@ -779,21 +714,15 @@ int main(void)
  4ea:	81 e0       	ldi	r24, 0x01	; 1
  4ec:	97 e0       	ldi	r25, 0x07	; 7
  4ee:	9b 8f       	std	Y+27, r25	; 0x1b
-		
-	struct CAN_MOB can_UAC1_mob;
-	can_UAC1_mob.mob_id = 0x701;
  4f0:	8a 8f       	std	Y+26, r24	; 0x1a
  4f2:	8f ef       	ldi	r24, 0xFF	; 255
  4f4:	9f ef       	ldi	r25, 0xFF	; 255
  4f6:	9d 8f       	std	Y+29, r25	; 0x1d
-	can_UAC1_mob.mob_idmask = 0xFFFF;//sent
  4f8:	8c 8f       	std	Y+28, r24	; 0x1c
  4fa:	1e 8e       	std	Y+30, r1	; 0x1e
  4fc:	28 e0       	ldi	r18, 0x08	; 8
  4fe:	ce 01       	movw	r24, r28
-	can_UAC1_mob.mob_number = 0;
  500:	4f 96       	adiw	r24, 0x1f	; 31
-	uint8_t UAC1_databytes[8] = {0};
  502:	fc 01       	movw	r30, r24
  504:	e2 2e       	mov	r14, r18
  506:	11 92       	st	Z+, r1
@@ -801,13 +730,7 @@ int main(void)
  50a:	e9 f7       	brne	.-6      	; 0x506 <main+0x66>
  50c:	78 94       	sei
  50e:	20 91 15 01 	lds	r18, 0x0115	; 0x800115 <sys_time>
-	
-	sei();
  512:	30 91 16 01 	lds	r19, 0x0116	; 0x800116 <sys_time+0x1>
-
-	while (1)
-	{
-		if(TIME_PASSED_10_MS)
  516:	40 91 17 01 	lds	r20, 0x0117	; 0x800117 <sys_time+0x2>
  51a:	50 91 18 01 	lds	r21, 0x0118	; 0x800118 <sys_time+0x3>
  51e:	80 91 01 01 	lds	r24, 0x0101	; 0x800101 <time_10ms>
@@ -828,15 +751,11 @@ int main(void)
  544:	08 f4       	brcc	.+2      	; 0x548 <main+0xa8>
  546:	8c c0       	rjmp	.+280    	; 0x660 <main+0x1c0>
  548:	da dd       	rcall	.-1100   	; 0xfe <adc_start_conversion>
-		{
-			adc_start_conversion();
  54a:	32 de       	rcall	.-924    	; 0x1b0 <adc_get_1>
  54c:	9a 83       	std	Y+2, r25	; 0x02
-			uint16_t adc_value = adc_get_1(); // Get the ADC value from the sensor
  54e:	89 83       	std	Y+1, r24	; 0x01
  550:	89 81       	ldd	r24, Y+1	; 0x01
  552:	9a 81       	ldd	r25, Y+2	; 0x02
-			float voltage =
  554:	cc 01       	movw	r24, r24
  556:	a0 e0       	ldi	r26, 0x00	; 0
  558:	b0 e0       	ldi	r27, 0x00	; 0
@@ -847,7 +766,6 @@ int main(void)
  562:	cb 01       	movw	r24, r22
  564:	20 e0       	ldi	r18, 0x00	; 0
  566:	30 ec       	ldi	r19, 0xC0	; 192
-			(adc_value / (float)ADC_MAX_VALUE) * ADC_VOLTAGE_REF;
  568:	4f e7       	ldi	r20, 0x7F	; 127
  56a:	54 e4       	ldi	r21, 0x44	; 68
  56c:	bc 01       	movw	r22, r24
@@ -857,12 +775,6 @@ int main(void)
  574:	cb 01       	movw	r24, r22
  576:	20 e0       	ldi	r18, 0x00	; 0
  578:	30 e0       	ldi	r19, 0x00	; 0
-	{
-		if(TIME_PASSED_10_MS)
-		{
-			adc_start_conversion();
-			uint16_t adc_value = adc_get_1(); // Get the ADC value from the sensor
-			float voltage =
  57a:	40 ea       	ldi	r20, 0xA0	; 160
  57c:	50 e4       	ldi	r21, 0x40	; 64
  57e:	bc 01       	movw	r22, r24
@@ -876,8 +788,6 @@ int main(void)
  58e:	be 83       	std	Y+6, r27	; 0x06
  590:	20 e0       	ldi	r18, 0x00	; 0
  592:	30 e0       	ldi	r19, 0x00	; 0
-			(adc_value / (float)ADC_MAX_VALUE) * ADC_VOLTAGE_REF;
-			float acceleration = (voltage - ZERO_G_VOLTAGE) / SENSITIVITY;
  594:	40 e2       	ldi	r20, 0x20	; 32
  596:	50 e4       	ldi	r21, 0x40	; 64
  598:	6b 81       	ldd	r22, Y+3	; 0x03
@@ -902,9 +812,6 @@ int main(void)
  5be:	ba 87       	std	Y+10, r27	; 0x0a
  5c0:	20 e0       	ldi	r18, 0x00	; 0
  5c2:	30 e0       	ldi	r19, 0x00	; 0
-
-			// Convert acceleration to a range from -100.0 to +100.0 g
-			int16_t scaledAcceleration = (int16_t)(acceleration * 100);
  5c4:	48 ec       	ldi	r20, 0xC8	; 200
  5c6:	52 e4       	ldi	r21, 0x42	; 66
  5c8:	6f 81       	ldd	r22, Y+7	; 0x07
@@ -924,15 +831,10 @@ int main(void)
  5e4:	8b 85       	ldd	r24, Y+11	; 0x0b
  5e6:	9c 85       	ldd	r25, Y+12	; 0x0c
  5e8:	99 23       	and	r25, r25
-
-			// Prepare CAN message
-			uint8_t UAC_databytes[2];
-			if (scaledAcceleration < 0) {
  5ea:	a4 f4       	brge	.+40     	; 0x614 <main+0x174>
  5ec:	8b 85       	ldd	r24, Y+11	; 0x0b
  5ee:	9c 85       	ldd	r25, Y+12	; 0x0c
  5f0:	91 95       	neg	r25
-				scaledAcceleration = -scaledAcceleration;
  5f2:	81 95       	neg	r24
  5f4:	91 09       	sbc	r25, r1
  5f6:	9c 87       	std	Y+12, r25	; 0x0c
@@ -940,85 +842,33 @@ int main(void)
  5fa:	8b 85       	ldd	r24, Y+11	; 0x0b
  5fc:	8a 8b       	std	Y+18, r24	; 0x12
  5fe:	8b 85       	ldd	r24, Y+11	; 0x0b
-				UAC0_databytes[0] =
-				(uint8_t)(scaledAcceleration & 0xFF); // Lower byte
  600:	9c 85       	ldd	r25, Y+12	; 0x0c
-
-			// Prepare CAN message
-			uint8_t UAC_databytes[2];
-			if (scaledAcceleration < 0) {
-				scaledAcceleration = -scaledAcceleration;
-				UAC0_databytes[0] =
  602:	89 2f       	mov	r24, r25
-				(uint8_t)(scaledAcceleration & 0xFF); // Lower byte
-				UAC0_databytes[1] =
-				(uint8_t)((scaledAcceleration >> 8) &
  604:	99 0f       	add	r25, r25
  606:	99 0b       	sbc	r25, r25
  608:	8f 77       	andi	r24, 0x7F	; 127
  60a:	8b 8b       	std	Y+19, r24	; 0x13
  60c:	8b 89       	ldd	r24, Y+19	; 0x13
  60e:	80 68       	ori	r24, 0x80	; 128
-			uint8_t UAC_databytes[2];
-			if (scaledAcceleration < 0) {
-				scaledAcceleration = -scaledAcceleration;
-				UAC0_databytes[0] =
-				(uint8_t)(scaledAcceleration & 0xFF); // Lower byte
-				UAC0_databytes[1] =
  610:	8b 8b       	std	Y+19, r24	; 0x13
-				(uint8_t)((scaledAcceleration >> 8) &
-				0x7F); // Higher byte with sign bit cleared
-				UAC0_databytes[1] |=
  612:	09 c0       	rjmp	.+18     	; 0x626 <main+0x186>
  614:	8b 85       	ldd	r24, Y+11	; 0x0b
  616:	8a 8b       	std	Y+18, r24	; 0x12
  618:	8b 85       	ldd	r24, Y+11	; 0x0b
-				0x80; // Set the sign bit for negative values
-				} else {
-				UAC0_databytes[0] =
-				(uint8_t)(scaledAcceleration & 0xFF); // Lower byte
  61a:	9c 85       	ldd	r25, Y+12	; 0x0c
-				(uint8_t)((scaledAcceleration >> 8) &
-				0x7F); // Higher byte with sign bit cleared
-				UAC0_databytes[1] |=
-				0x80; // Set the sign bit for negative values
-				} else {
-				UAC0_databytes[0] =
  61c:	89 2f       	mov	r24, r25
-				(uint8_t)(scaledAcceleration & 0xFF); // Lower byte
-				UAC0_databytes[1] =
-				(uint8_t)((scaledAcceleration >> 8) &
  61e:	99 0f       	add	r25, r25
  620:	99 0b       	sbc	r25, r25
  622:	8f 77       	andi	r24, 0x7F	; 127
  624:	8b 8b       	std	Y+19, r24	; 0x13
  626:	1c 8a       	std	Y+20, r1	; 0x14
-				UAC0_databytes[1] |=
-				0x80; // Set the sign bit for negative values
-				} else {
-				UAC0_databytes[0] =
-				(uint8_t)(scaledAcceleration & 0xFF); // Lower byte
-				UAC0_databytes[1] =
  628:	1d 8a       	std	Y+21, r1	; 0x15
-				(uint8_t)((scaledAcceleration >> 8) &
-				0x7F); // Higher byte with sign bit cleared
-			}
-			
-			// CAN bus
-			UAC0_databytes[2] = 0;
  62a:	1e 8a       	std	Y+22, r1	; 0x16
-			UAC0_databytes[3] = 0;
  62c:	1f 8a       	std	Y+23, r1	; 0x17
-			UAC0_databytes[4] = 0;
  62e:	18 8e       	std	Y+24, r1	; 0x18
-			UAC0_databytes[5] = 0;
  630:	19 8e       	std	Y+25, r1	; 0x19
-			UAC0_databytes[6] = 0;
  632:	9e 01       	movw	r18, r28
-			UAC0_databytes[7] = 0;
  634:	2e 5e       	subi	r18, 0xEE	; 238
-
-			can_tx(&can_UAC0_mob, UAC0_databytes); // send the CAN Message	100Hz
  636:	3f 4f       	sbci	r19, 0xFF	; 255
  638:	ce 01       	movw	r24, r28
  63a:	0d 96       	adiw	r24, 0x0d	; 13
@@ -1026,8 +876,6 @@ int main(void)
  63e:	87 de       	rcall	.-754    	; 0x34e <can_tx>
  640:	80 91 15 01 	lds	r24, 0x0115	; 0x800115 <sys_time>
  644:	90 91 16 01 	lds	r25, 0x0116	; 0x800116 <sys_time+0x1>
-						
-			time_10ms = sys_time;
  648:	a0 91 17 01 	lds	r26, 0x0117	; 0x800117 <sys_time+0x2>
  64c:	b0 91 18 01 	lds	r27, 0x0118	; 0x800118 <sys_time+0x3>
  650:	80 93 01 01 	sts	0x0101, r24	; 0x800101 <time_10ms>
@@ -1036,10 +884,6 @@ int main(void)
  65c:	b0 93 04 01 	sts	0x0104, r27	; 0x800104 <time_10ms+0x3>
  660:	20 91 15 01 	lds	r18, 0x0115	; 0x800115 <sys_time>
  664:	30 91 16 01 	lds	r19, 0x0116	; 0x800116 <sys_time+0x1>
-		
-		} // end of 10ms
-
-		if (TIME_PASSED_100_MS)
  668:	40 91 17 01 	lds	r20, 0x0117	; 0x800117 <sys_time+0x2>
  66c:	50 91 18 01 	lds	r21, 0x0118	; 0x800118 <sys_time+0x3>
  670:	80 91 05 01 	lds	r24, 0x0105	; 0x800105 <time_100ms>
@@ -1061,12 +905,7 @@ int main(void)
  698:	88 f0       	brcs	.+34     	; 0x6bc <main+0x21c>
  69a:	b2 d0       	rcall	.+356    	; 0x800 <sys_tick_heart>
  69c:	80 91 15 01 	lds	r24, 0x0115	; 0x800115 <sys_time>
-		{
-						
-			sys_tick_heart();
  6a0:	90 91 16 01 	lds	r25, 0x0116	; 0x800116 <sys_time+0x1>
-				
-			time_100ms = sys_time;						
  6a4:	a0 91 17 01 	lds	r26, 0x0117	; 0x800117 <sys_time+0x2>
  6a8:	b0 91 18 01 	lds	r27, 0x0118	; 0x800118 <sys_time+0x3>
  6ac:	80 93 05 01 	sts	0x0105, r24	; 0x800105 <time_100ms>
@@ -1075,9 +914,6 @@ int main(void)
  6b8:	b0 93 08 01 	sts	0x0108, r27	; 0x800108 <time_100ms+0x3>
  6bc:	20 91 15 01 	lds	r18, 0x0115	; 0x800115 <sys_time>
  6c0:	30 91 16 01 	lds	r19, 0x0116	; 0x800116 <sys_time+0x1>
-		} // end of 100ms
-	
-		if (TIME_PASSED_200_MS)
  6c4:	40 91 17 01 	lds	r20, 0x0117	; 0x800117 <sys_time+0x2>
  6c8:	50 91 18 01 	lds	r21, 0x0118	; 0x800118 <sys_time+0x3>
  6cc:	80 91 09 01 	lds	r24, 0x0109	; 0x800109 <time_200ms>
@@ -1099,103 +935,68 @@ int main(void)
  6f4:	08 f4       	brcc	.+2      	; 0x6f8 <main+0x258>
  6f6:	0b cf       	rjmp	.-490    	; 0x50e <main+0x6e>
  6f8:	80 91 14 01 	lds	r24, 0x0114	; 0x800114 <switchi>
-		{
-			if(switchi == 0)
  6fc:	88 23       	and	r24, r24
  6fe:	b1 f4       	brne	.+44     	; 0x72c <main+0x28c>
  700:	80 e0       	ldi	r24, 0x00	; 0
  702:	d5 d0       	rcall	.+426    	; 0x8ae <read_brake_temp>
-			{
-				Typ_K1_temp = read_brake_temp(0); 
  704:	90 93 11 01 	sts	0x0111, r25	; 0x800111 <Typ_K1_temp+0x1>
  708:	80 93 10 01 	sts	0x0110, r24	; 0x800110 <Typ_K1_temp>
  70c:	81 e0       	ldi	r24, 0x01	; 1
  70e:	80 93 14 01 	sts	0x0114, r24	; 0x800114 <switchi>
-				switchi = 1;
  712:	8e e4       	ldi	r24, 0x4E	; 78
  714:	90 e0       	ldi	r25, 0x00	; 0
  716:	fc 01       	movw	r30, r24
-				
-				if(SPDR == 0x04)
  718:	80 81       	ld	r24, Z
  71a:	84 30       	cpi	r24, 0x04	; 4
  71c:	39 f4       	brne	.+14     	; 0x72c <main+0x28c>
  71e:	80 91 0d 01 	lds	r24, 0x010D	; 0x80010d <Temp_Disc_Fail>
-				{
-					Temp_Disc_Fail;
  722:	80 91 0f 01 	lds	r24, 0x010F	; 0x80010f <deadend_counter>
-					deadend_counter++;
  726:	8f 5f       	subi	r24, 0xFF	; 255
  728:	80 93 0f 01 	sts	0x010F, r24	; 0x80010f <deadend_counter>
  72c:	80 91 14 01 	lds	r24, 0x0114	; 0x800114 <switchi>
-				}
-			}
-			if(switchi == 1)
  730:	81 30       	cpi	r24, 0x01	; 1
  732:	a9 f4       	brne	.+42     	; 0x75e <main+0x2be>
  734:	81 e0       	ldi	r24, 0x01	; 1
  736:	bb d0       	rcall	.+374    	; 0x8ae <read_brake_temp>
-			{
-				Typ_K2_temp = read_brake_temp(1);
  738:	90 93 13 01 	sts	0x0113, r25	; 0x800113 <Typ_K2_temp+0x1>
  73c:	80 93 12 01 	sts	0x0112, r24	; 0x800112 <Typ_K2_temp>
  740:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <switchi>
  744:	8e e4       	ldi	r24, 0x4E	; 78
-				switchi = 0;
  746:	90 e0       	ldi	r25, 0x00	; 0
  748:	fc 01       	movw	r30, r24
-				
-				if(SPDR == 0x04)
  74a:	80 81       	ld	r24, Z
  74c:	84 30       	cpi	r24, 0x04	; 4
  74e:	39 f4       	brne	.+14     	; 0x75e <main+0x2be>
  750:	80 91 0e 01 	lds	r24, 0x010E	; 0x80010e <Temp_Fluid_Fail>
  754:	80 91 0f 01 	lds	r24, 0x010F	; 0x80010f <deadend_counter>
-				{
-					Temp_Fluid_Fail;
  758:	8f 5f       	subi	r24, 0xFF	; 255
-					deadend_counter++;
  75a:	80 93 0f 01 	sts	0x010F, r24	; 0x80010f <deadend_counter>
  75e:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <Typ_K2_temp>
  762:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <Typ_K2_temp+0x1>
-				}
-			}
-			
-			// CAN bus
-			UAC1_databytes[0]	=	(Typ_K2_temp	>>	8)	&	0xFF							;	//lsb
  766:	89 2f       	mov	r24, r25
  768:	99 27       	eor	r25, r25
  76a:	8f 8f       	std	Y+31, r24	; 0x1f
  76c:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <Typ_K2_temp>
  770:	90 91 13 01 	lds	r25, 0x0113	; 0x800113 <Typ_K2_temp+0x1>
-			UAC1_databytes[1]	=	(Typ_K2_temp)			&	0xFF							;	//msb
  774:	88 a3       	std	Y+32, r24	; 0x20
  776:	80 91 10 01 	lds	r24, 0x0110	; 0x800110 <Typ_K1_temp>
  77a:	90 91 11 01 	lds	r25, 0x0111	; 0x800111 <Typ_K1_temp+0x1>
-			UAC1_databytes[2]	=	(Typ_K1_temp	>>	8)	&	0xFF							;	//msb // & 0x3F da ersten 4 bit (links) nicht zur Temperatur gehören, da 12 bit Auflösung
  77e:	89 2f       	mov	r24, r25
  780:	99 27       	eor	r25, r25
  782:	89 a3       	std	Y+33, r24	; 0x21
  784:	80 91 10 01 	lds	r24, 0x0110	; 0x800110 <Typ_K1_temp>
  788:	90 91 11 01 	lds	r25, 0x0111	; 0x800111 <Typ_K1_temp+0x1>
-			UAC1_databytes[3]	=	(Typ_K1_temp)			&	0xFF							;	//lsb
  78c:	8a a3       	std	Y+34, r24	; 0x22
  78e:	86 e6       	ldi	r24, 0x66	; 102
  790:	8b a3       	std	Y+35, r24	; 0x23
-			UAC1_databytes[4]	=	0x66														;
  792:	80 91 0f 01 	lds	r24, 0x010F	; 0x80010f <deadend_counter>
-			UAC1_databytes[5]	=	(deadend_counter)		&	0xFF							;
  796:	8c a3       	std	Y+36, r24	; 0x24
  798:	80 91 0e 01 	lds	r24, 0x010E	; 0x80010e <Temp_Fluid_Fail>
-			UAC1_databytes[6]	=	(Temp_Fluid_Fail)		&	0xFF							;
  79c:	8d a3       	std	Y+37, r24	; 0x25
  79e:	80 91 0d 01 	lds	r24, 0x010D	; 0x80010d <Temp_Disc_Fail>
-			UAC1_databytes[7]	=	(Temp_Disc_Fail)		&	0xFF							;	// 1 = no typ K connected
  7a2:	8e a3       	std	Y+38, r24	; 0x26
  7a4:	9e 01       	movw	r18, r28
  7a6:	21 5e       	subi	r18, 0xE1	; 225
-			
-			can_tx(&can_UAC1_mob, UAC1_databytes);
  7a8:	3f 4f       	sbci	r19, 0xFF	; 255
  7aa:	ce 01       	movw	r24, r28
  7ac:	4a 96       	adiw	r24, 0x1a	; 26
@@ -1203,8 +1004,6 @@ int main(void)
  7b0:	ce dd       	rcall	.-1124   	; 0x34e <can_tx>
  7b2:	80 91 15 01 	lds	r24, 0x0115	; 0x800115 <sys_time>
  7b6:	90 91 16 01 	lds	r25, 0x0116	; 0x800116 <sys_time+0x1>
-			
-			time_200ms = sys_time;
  7ba:	a0 91 17 01 	lds	r26, 0x0117	; 0x800117 <sys_time+0x2>
  7be:	b0 91 18 01 	lds	r27, 0x0118	; 0x800118 <sys_time+0x3>
  7c2:	80 93 09 01 	sts	0x0109, r24	; 0x800109 <time_200ms>
@@ -1214,27 +1013,15 @@ int main(void)
  7d2:	9d ce       	rjmp	.-710    	; 0x50e <main+0x6e>
 
 000007d4 <port_config>:
- *  Author: Lukas Deeken
- */ 
-#include "misc_functions.h"
-volatile unsigned long sys_time = 0;
-
-void port_config(){
  7d4:	cf 93       	push	r28
  7d6:	df 93       	push	r29
  7d8:	cd b7       	in	r28, 0x3d	; 61
  7da:	de b7       	in	r29, 0x3e	; 62
-	DDRA = 0 | (1<<PA0) | (1<<PA1);							//Error & Heart
  7dc:	81 e2       	ldi	r24, 0x21	; 33
  7de:	90 e0       	ldi	r25, 0x00	; 0
  7e0:	23 e0       	ldi	r18, 0x03	; 3
  7e2:	fc 01       	movw	r30, r24
  7e4:	20 83       	st	Z, r18
-	//DDRB = 0 | (1<<PB6);									//SPI, Setup is done in SPI.C & 3,3V Enbale	
-	//DDRC = 0;												//empty
-	//DDRD = 0;												//Can so all Input Setup is done in CANlib.C
-	//DDRE = 0;												//empty
-	DDRF &=	~(1<<PF0);										//mark analog inputs on Port F as input		
  7e6:	80 e3       	ldi	r24, 0x30	; 48
  7e8:	90 e0       	ldi	r25, 0x00	; 0
  7ea:	20 e3       	ldi	r18, 0x30	; 48
@@ -1244,21 +1031,16 @@ void port_config(){
  7f2:	2e 7f       	andi	r18, 0xFE	; 254
  7f4:	fc 01       	movw	r30, r24
  7f6:	20 83       	st	Z, r18
-	//PORTB = 0 | (1<<PB6);									//switch 3,3V enable off as we currently use nothing with 3,3V																		
-}
  7f8:	00 00       	nop
  7fa:	df 91       	pop	r29
  7fc:	cf 91       	pop	r28
  7fe:	08 95       	ret
 
 00000800 <sys_tick_heart>:
-
-void sys_tick_heart(){
  800:	cf 93       	push	r28
  802:	df 93       	push	r29
  804:	cd b7       	in	r28, 0x3d	; 61
  806:	de b7       	in	r29, 0x3e	; 62
-	PORTA ^= (1<<PA1); //toggling the Status of PA1 to make the Heart LED blink every SYStick
  808:	82 e2       	ldi	r24, 0x22	; 34
  80a:	90 e0       	ldi	r25, 0x00	; 0
  80c:	22 e2       	ldi	r18, 0x22	; 34
@@ -1269,49 +1051,37 @@ void sys_tick_heart(){
  816:	23 27       	eor	r18, r19
  818:	fc 01       	movw	r30, r24
  81a:	20 83       	st	Z, r18
-}
  81c:	00 00       	nop
  81e:	df 91       	pop	r29
  820:	cf 91       	pop	r28
  822:	08 95       	ret
 
 00000824 <sys_timer_config>:
-
-void sys_timer_config(){
  824:	cf 93       	push	r28
  826:	df 93       	push	r29
  828:	cd b7       	in	r28, 0x3d	; 61
  82a:	de b7       	in	r29, 0x3e	; 62
-	//8 bit Timer 0 configuration
-	//ctc mode and 64 as prescaler for 16Mhz
-	TCCR0A = 0 | (1<<WGM01) | (1<<CS01) | (1<<CS00);
  82c:	84 e4       	ldi	r24, 0x44	; 68
  82e:	90 e0       	ldi	r25, 0x00	; 0
  830:	2b e0       	ldi	r18, 0x0B	; 11
  832:	fc 01       	movw	r30, r24
  834:	20 83       	st	Z, r18
-	TIMSK0 = 0 | (1<<OCF0A);	//compare interrupt enable
  836:	8e e6       	ldi	r24, 0x6E	; 110
  838:	90 e0       	ldi	r25, 0x00	; 0
  83a:	22 e0       	ldi	r18, 0x02	; 2
  83c:	fc 01       	movw	r30, r24
  83e:	20 83       	st	Z, r18
-	OCR0A = 250-1;				// compare value for 1ms;
  840:	87 e4       	ldi	r24, 0x47	; 71
  842:	90 e0       	ldi	r25, 0x00	; 0
  844:	29 ef       	ldi	r18, 0xF9	; 249
  846:	fc 01       	movw	r30, r24
  848:	20 83       	st	Z, r18
-}
  84a:	00 00       	nop
  84c:	df 91       	pop	r29
  84e:	cf 91       	pop	r28
  850:	08 95       	ret
 
 00000852 <__vector_16>:
-
-//ISR for Timer 0 compare interrupt
-ISR(TIMER0_COMP_vect){
  852:	1f 92       	push	r1
  854:	0f 92       	push	r0
  856:	00 90 5f 00 	lds	r0, 0x005F	; 0x80005f <__TEXT_REGION_LENGTH__+0x7e005f>
@@ -1325,7 +1095,6 @@ ISR(TIMER0_COMP_vect){
  868:	df 93       	push	r29
  86a:	cd b7       	in	r28, 0x3d	; 61
  86c:	de b7       	in	r29, 0x3e	; 62
-	sys_time++; //system time generation
  86e:	80 91 15 01 	lds	r24, 0x0115	; 0x800115 <sys_time>
  872:	90 91 16 01 	lds	r25, 0x0116	; 0x800116 <sys_time+0x1>
  876:	a0 91 17 01 	lds	r26, 0x0117	; 0x800117 <sys_time+0x2>
@@ -1337,8 +1106,6 @@ ISR(TIMER0_COMP_vect){
  888:	90 93 16 01 	sts	0x0116, r25	; 0x800116 <sys_time+0x1>
  88c:	a0 93 17 01 	sts	0x0117, r26	; 0x800117 <sys_time+0x2>
  890:	b0 93 18 01 	sts	0x0118, r27	; 0x800118 <sys_time+0x3>
-	//for every time the timer equals 249 an interrupt is generated resulting in increasing the SYStime
-}
  894:	00 00       	nop
  896:	df 91       	pop	r29
  898:	cf 91       	pop	r28
@@ -1353,12 +1120,6 @@ ISR(TIMER0_COMP_vect){
  8ac:	18 95       	reti
 
 000008ae <read_brake_temp>:
-#include <math.h>
-
-
-// Typ K temperature
-uint16_t read_brake_temp(uint8_t Typ_K)
-{
  8ae:	cf 93       	push	r28
  8b0:	df 93       	push	r29
  8b2:	cd b7       	in	r28, 0x3d	; 61
@@ -1370,23 +1131,16 @@ uint16_t read_brake_temp(uint8_t Typ_K)
  8be:	0f be       	out	0x3f, r0	; 63
  8c0:	cd bf       	out	0x3d, r28	; 61
  8c2:	8b 87       	std	Y+11, r24	; 0x0b
-	volatile uint16_t brake_temp_msb = 0;
  8c4:	1a 82       	std	Y+2, r1	; 0x02
  8c6:	19 82       	std	Y+1, r1	; 0x01
-	volatile uint16_t brake_temp_lsb = 0;
  8c8:	1c 82       	std	Y+4, r1	; 0x04
  8ca:	1b 82       	std	Y+3, r1	; 0x03
-	volatile uint16_t brake_temp = 0;
  8cc:	1e 82       	std	Y+6, r1	; 0x06
  8ce:	1d 82       	std	Y+5, r1	; 0x05
-	volatile uint16_t brake_temp_normal = 0;
  8d0:	18 86       	std	Y+8, r1	; 0x08
  8d2:	1f 82       	std	Y+7, r1	; 0x07
-	volatile uint16_t brake_temp_Grad_C = 0;
  8d4:	1a 86       	std	Y+10, r1	; 0x0a
  8d6:	19 86       	std	Y+9, r1	; 0x09
-	
-	switch(Typ_K) {
  8d8:	8b 85       	ldd	r24, Y+11	; 0x0b
  8da:	88 2f       	mov	r24, r24
  8dc:	90 e0       	ldi	r25, 0x00	; 0
@@ -1395,7 +1149,6 @@ uint16_t read_brake_temp(uint8_t Typ_K)
  8e2:	01 97       	sbiw	r24, 0x01	; 1
  8e4:	59 f0       	breq	.+22     	; 0x8fc <read_brake_temp+0x4e>
  8e6:	14 c0       	rjmp	.+40     	; 0x910 <read_brake_temp+0x62>
-		case 0: SS_Typ_K1_LOW(); break;
  8e8:	85 e2       	ldi	r24, 0x25	; 37
  8ea:	90 e0       	ldi	r25, 0x00	; 0
  8ec:	25 e2       	ldi	r18, 0x25	; 37
@@ -1406,7 +1159,6 @@ uint16_t read_brake_temp(uint8_t Typ_K)
  8f6:	fc 01       	movw	r30, r24
  8f8:	20 83       	st	Z, r18
  8fa:	0a c0       	rjmp	.+20     	; 0x910 <read_brake_temp+0x62>
-		case 1: SS_Typ_K2_LOW(); break;
  8fc:	85 e2       	ldi	r24, 0x25	; 37
  8fe:	90 e0       	ldi	r25, 0x00	; 0
  900:	25 e2       	ldi	r18, 0x25	; 37
@@ -1417,24 +1169,18 @@ uint16_t read_brake_temp(uint8_t Typ_K)
  90a:	fc 01       	movw	r30, r24
  90c:	20 83       	st	Z, r18
  90e:	00 00       	nop
-	}
-
-	brake_temp_msb = SPI_transfer(0x00);
  910:	80 e0       	ldi	r24, 0x00	; 0
  912:	8d d0       	rcall	.+282    	; 0xa2e <SPI_transfer>
  914:	88 2f       	mov	r24, r24
  916:	90 e0       	ldi	r25, 0x00	; 0
  918:	9a 83       	std	Y+2, r25	; 0x02
  91a:	89 83       	std	Y+1, r24	; 0x01
-	brake_temp_lsb = SPI_transfer(0x00);
  91c:	80 e0       	ldi	r24, 0x00	; 0
  91e:	87 d0       	rcall	.+270    	; 0xa2e <SPI_transfer>
  920:	88 2f       	mov	r24, r24
  922:	90 e0       	ldi	r25, 0x00	; 0
  924:	9c 83       	std	Y+4, r25	; 0x04
  926:	8b 83       	std	Y+3, r24	; 0x03
-
-	switch(Typ_K) {
  928:	8b 85       	ldd	r24, Y+11	; 0x0b
  92a:	88 2f       	mov	r24, r24
  92c:	90 e0       	ldi	r25, 0x00	; 0
@@ -1443,7 +1189,6 @@ uint16_t read_brake_temp(uint8_t Typ_K)
  932:	01 97       	sbiw	r24, 0x01	; 1
  934:	59 f0       	breq	.+22     	; 0x94c <read_brake_temp+0x9e>
  936:	14 c0       	rjmp	.+40     	; 0x960 <read_brake_temp+0xb2>
-		case 0: SS_Typ_K1_HIGH(); break;
  938:	85 e2       	ldi	r24, 0x25	; 37
  93a:	90 e0       	ldi	r25, 0x00	; 0
  93c:	25 e2       	ldi	r18, 0x25	; 37
@@ -1454,7 +1199,6 @@ uint16_t read_brake_temp(uint8_t Typ_K)
  946:	fc 01       	movw	r30, r24
  948:	20 83       	st	Z, r18
  94a:	0a c0       	rjmp	.+20     	; 0x960 <read_brake_temp+0xb2>
-		case 1: SS_Typ_K2_HIGH(); break;
  94c:	85 e2       	ldi	r24, 0x25	; 37
  94e:	90 e0       	ldi	r25, 0x00	; 0
  950:	25 e2       	ldi	r18, 0x25	; 37
@@ -1465,9 +1209,6 @@ uint16_t read_brake_temp(uint8_t Typ_K)
  95a:	fc 01       	movw	r30, r24
  95c:	20 83       	st	Z, r18
  95e:	00 00       	nop
-	}
-	
-	brake_temp = (brake_temp_lsb | (brake_temp_msb << 8));	// Bit D0 bis D2 für Temperatur uninteressant
  960:	89 81       	ldd	r24, Y+1	; 0x01
  962:	9a 81       	ldd	r25, Y+2	; 0x02
  964:	38 2f       	mov	r19, r24
@@ -1478,7 +1219,6 @@ uint16_t read_brake_temp(uint8_t Typ_K)
  96e:	93 2b       	or	r25, r19
  970:	9e 83       	std	Y+6, r25	; 0x06
  972:	8d 83       	std	Y+5, r24	; 0x05
-	brake_temp_normal = (brake_temp >> 3);						// shift sodass die 12 letzten Bits die Temperatur anzeigen
  974:	8d 81       	ldd	r24, Y+5	; 0x05
  976:	9e 81       	ldd	r25, Y+6	; 0x06
  978:	96 95       	lsr	r25
@@ -1489,8 +1229,6 @@ uint16_t read_brake_temp(uint8_t Typ_K)
  982:	87 95       	ror	r24
  984:	98 87       	std	Y+8, r25	; 0x08
  986:	8f 83       	std	Y+7, r24	; 0x07
-
-	brake_temp_Grad_C = brake_temp_normal * 25;					// 25 = 100/4 (*100 für 2 Dezimalstellen, /4 für auflösung)
  988:	2f 81       	ldd	r18, Y+7	; 0x07
  98a:	38 85       	ldd	r19, Y+8	; 0x08
  98c:	49 e1       	ldi	r20, 0x19	; 25
@@ -1501,8 +1239,6 @@ uint16_t read_brake_temp(uint8_t Typ_K)
  996:	11 24       	eor	r1, r1
  998:	9a 87       	std	Y+10, r25	; 0x0a
  99a:	89 87       	std	Y+9, r24	; 0x09
-	
-	return brake_temp_Grad_C;
  99c:	89 85       	ldd	r24, Y+9	; 0x09
  99e:	9a 85       	ldd	r25, Y+10	; 0x0a
  9a0:	2b 96       	adiw	r28, 0x0b	; 11
@@ -1516,12 +1252,6 @@ uint16_t read_brake_temp(uint8_t Typ_K)
  9b0:	08 95       	ret
 
 000009b2 <SPI_MasterInit>:
-{																//
-	/* Wait for reception complete */							//
-	while(!(SPI_Status_Reg & (1<<SPI_Interrupft_Flag)));		//
-	/* Return data register */									//
-	return SPI_Data_Reg;										//
-}																//
  9b2:	cf 93       	push	r28
  9b4:	df 93       	push	r29
  9b6:	cd b7       	in	r28, 0x3d	; 61
@@ -1586,35 +1316,25 @@ uint16_t read_brake_temp(uint8_t Typ_K)
  a2c:	08 95       	ret
 
 00000a2e <SPI_transfer>:
-
-uint8_t SPI_transfer(uint8_t data){
  a2e:	cf 93       	push	r28
  a30:	df 93       	push	r29
  a32:	00 d0       	rcall	.+0      	; 0xa34 <SPI_transfer+0x6>
  a34:	cd b7       	in	r28, 0x3d	; 61
  a36:	de b7       	in	r29, 0x3e	; 62
  a38:	8a 83       	std	Y+2, r24	; 0x02
-	uint8_t deadend_counter = 0;
  a3a:	19 82       	std	Y+1, r1	; 0x01
-	SPDR = data;
  a3c:	8e e4       	ldi	r24, 0x4E	; 78
  a3e:	90 e0       	ldi	r25, 0x00	; 0
  a40:	2a 81       	ldd	r18, Y+2	; 0x02
  a42:	fc 01       	movw	r30, r24
  a44:	20 83       	st	Z, r18
-	
-	while(!(SPSR & (1<<SPIF)))					//wait for SPI_Interrupt_Flag
  a46:	19 c0       	rjmp	.+50     	; 0xa7a <SPI_transfer+0x4c>
-	{
-		if(++deadend_counter >= 200)				//for case that SPIF isnt send
  a48:	89 81       	ldd	r24, Y+1	; 0x01
  a4a:	8f 5f       	subi	r24, 0xFF	; 255
  a4c:	89 83       	std	Y+1, r24	; 0x01
  a4e:	89 81       	ldd	r24, Y+1	; 0x01
  a50:	88 3c       	cpi	r24, 0xC8	; 200
  a52:	50 f0       	brcs	.+20     	; 0xa68 <SPI_transfer+0x3a>
-		{
-			PORTA |= (1<<PA0);					//Enter Error state cause of failing SPI_Interrrupt_Flag  [Error-LED = On]
  a54:	82 e2       	ldi	r24, 0x22	; 34
  a56:	90 e0       	ldi	r25, 0x00	; 0
  a58:	22 e2       	ldi	r18, 0x22	; 34
@@ -1624,12 +1344,7 @@ uint8_t SPI_transfer(uint8_t data){
  a60:	21 60       	ori	r18, 0x01	; 1
  a62:	fc 01       	movw	r30, r24
  a64:	20 83       	st	Z, r18
-			break;								// quit while-loop
  a66:	0f c0       	rjmp	.+30     	; 0xa86 <SPI_transfer+0x58>
-		}
-		else
-		{
-			PORTA &= ~(1<<PA0);					//Leave Error state cause set SPI_Interrrupt_Flag  [Error-LED = Off]
  a68:	82 e2       	ldi	r24, 0x22	; 34
  a6a:	90 e0       	ldi	r25, 0x00	; 0
  a6c:	22 e2       	ldi	r18, 0x22	; 34
@@ -1639,29 +1354,16 @@ uint8_t SPI_transfer(uint8_t data){
  a74:	2e 7f       	andi	r18, 0xFE	; 254
  a76:	fc 01       	movw	r30, r24
  a78:	20 83       	st	Z, r18
-
-uint8_t SPI_transfer(uint8_t data){
-	uint8_t deadend_counter = 0;
-	SPDR = data;
-	
-	while(!(SPSR & (1<<SPIF)))					//wait for SPI_Interrupt_Flag
  a7a:	8d e4       	ldi	r24, 0x4D	; 77
  a7c:	90 e0       	ldi	r25, 0x00	; 0
  a7e:	fc 01       	movw	r30, r24
  a80:	80 81       	ld	r24, Z
  a82:	88 23       	and	r24, r24
  a84:	0c f7       	brge	.-62     	; 0xa48 <SPI_transfer+0x1a>
-		else
-		{
-			PORTA &= ~(1<<PA0);					//Leave Error state cause set SPI_Interrrupt_Flag  [Error-LED = Off]
-		}
-	}
-	return SPDR;
  a86:	8e e4       	ldi	r24, 0x4E	; 78
  a88:	90 e0       	ldi	r25, 0x00	; 0
  a8a:	fc 01       	movw	r30, r24
  a8c:	80 81       	ld	r24, Z
-}
  a8e:	0f 90       	pop	r0
  a90:	0f 90       	pop	r0
  a92:	df 91       	pop	r29
