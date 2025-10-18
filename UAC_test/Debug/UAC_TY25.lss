@@ -19,7 +19,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   7 .debug_abbrev 00000e46  00000000  00000000  00002463  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000c2c  00000000  00000000  000032a9  2**0
+  8 .debug_line   00000c2d  00000000  00000000  000032a9  2**0
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  00000344  00000000  00000000  00003ed8  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -268,6 +268,12 @@ Disassembly of section .text:
  1c4:	08 95       	ret
 
 000001c6 <can_check_free>:
+		CANPAGE = (to_receive->mob_number << MOBNB0) | (1 << AINC) | byte;
+		data[byte] = CANMSG;
+	}
+	
+	
+}
  1c6:	cf 93       	push	r28
  1c8:	df 93       	push	r29
  1ca:	00 d0       	rcall	.+0      	; 0x1cc <can_check_free+0x6>
@@ -439,12 +445,12 @@ Disassembly of section .text:
  312:	20 83       	st	Z, r18
  314:	83 ee       	ldi	r24, 0xE3	; 227
  316:	90 e0       	ldi	r25, 0x00	; 0
- 318:	2c e0       	ldi	r18, 0x0C	; 12
+ 318:	24 e0       	ldi	r18, 0x04	; 4
  31a:	fc 01       	movw	r30, r24
  31c:	20 83       	st	Z, r18
  31e:	84 ee       	ldi	r24, 0xE4	; 228
  320:	90 e0       	ldi	r25, 0x00	; 0
- 322:	27 e3       	ldi	r18, 0x37	; 55
+ 322:	23 e1       	ldi	r18, 0x13	; 19
  324:	fc 01       	movw	r30, r24
  326:	20 83       	st	Z, r18
  328:	8b ed       	ldi	r24, 0xDB	; 219
@@ -468,6 +474,7 @@ Disassembly of section .text:
  34c:	08 95       	ret
 
 0000034e <can_tx>:
+void can_tx(struct CAN_MOB *to_send, uint8_t *data){
  34e:	cf 93       	push	r28
  350:	df 93       	push	r29
  352:	00 d0       	rcall	.+0      	; 0x354 <can_tx+0x6>
@@ -479,8 +486,11 @@ Disassembly of section .text:
  35e:	8a 83       	std	Y+2, r24	; 0x02
  360:	7d 83       	std	Y+5, r23	; 0x05
  362:	6c 83       	std	Y+4, r22	; 0x04
+	
+	for(uint8_t byte = 0; byte <8; byte++){
  364:	19 82       	std	Y+1, r1	; 0x01
  366:	24 c0       	rjmp	.+72     	; 0x3b0 <can_tx+0x62>
+		CANPAGE = (to_send->mob_number << MOBNB0) | (1 << AINC) | byte;
  368:	8d ee       	ldi	r24, 0xED	; 237
  36a:	90 e0       	ldi	r25, 0x00	; 0
  36c:	2a 81       	ldd	r18, Y+2	; 0x02
@@ -501,6 +511,7 @@ Disassembly of section .text:
  38a:	28 60       	ori	r18, 0x08	; 8
  38c:	fc 01       	movw	r30, r24
  38e:	20 83       	st	Z, r18
+		CANMSG = data[byte];
  390:	8a ef       	ldi	r24, 0xFA	; 250
  392:	90 e0       	ldi	r25, 0x00	; 0
  394:	29 81       	ldd	r18, Y+1	; 0x01
@@ -514,12 +525,23 @@ Disassembly of section .text:
  3a4:	20 81       	ld	r18, Z
  3a6:	fc 01       	movw	r30, r24
  3a8:	20 83       	st	Z, r18
+	
+	
+}
+void can_tx(struct CAN_MOB *to_send, uint8_t *data){
+	
+	for(uint8_t byte = 0; byte <8; byte++){
  3aa:	89 81       	ldd	r24, Y+1	; 0x01
  3ac:	8f 5f       	subi	r24, 0xFF	; 255
  3ae:	89 83       	std	Y+1, r24	; 0x01
  3b0:	89 81       	ldd	r24, Y+1	; 0x01
  3b2:	88 30       	cpi	r24, 0x08	; 8
  3b4:	c8 f2       	brcs	.-78     	; 0x368 <can_tx+0x1a>
+		CANPAGE = (to_send->mob_number << MOBNB0) | (1 << AINC) | byte;
+		CANMSG = data[byte];
+	}
+	
+	CANPAGE = to_send->mob_number << MOBNB0;
  3b6:	8d ee       	ldi	r24, 0xED	; 237
  3b8:	90 e0       	ldi	r25, 0x00	; 0
  3ba:	2a 81       	ldd	r18, Y+2	; 0x02
@@ -530,6 +552,7 @@ Disassembly of section .text:
  3c4:	20 7f       	andi	r18, 0xF0	; 240
  3c6:	fc 01       	movw	r30, r24
  3c8:	20 83       	st	Z, r18
+	if (can_check_free(to_send->mob_number)){
  3ca:	8a 81       	ldd	r24, Y+2	; 0x02
  3cc:	9b 81       	ldd	r25, Y+3	; 0x03
  3ce:	fc 01       	movw	r30, r24
@@ -538,10 +561,12 @@ Disassembly of section .text:
  3d4:	88 23       	and	r24, r24
  3d6:	09 f4       	brne	.+2      	; 0x3da <can_tx+0x8c>
  3d8:	44 c0       	rjmp	.+136    	; 0x462 <__LOCK_REGION_LENGTH__+0x62>
+		CANSTMOB = 0;
  3da:	8e ee       	ldi	r24, 0xEE	; 238
  3dc:	90 e0       	ldi	r25, 0x00	; 0
  3de:	fc 01       	movw	r30, r24
  3e0:	10 82       	st	Z, r1
+		CANIDT1 = to_send->mob_id>>3;
  3e2:	83 ef       	ldi	r24, 0xF3	; 243
  3e4:	90 e0       	ldi	r25, 0x00	; 0
  3e6:	2a 81       	ldd	r18, Y+2	; 0x02
@@ -557,6 +582,7 @@ Disassembly of section .text:
  3fa:	27 95       	ror	r18
  3fc:	fc 01       	movw	r30, r24
  3fe:	20 83       	st	Z, r18
+		CANIDT2 = (to_send->mob_id << 5) & 0b11100000;
  400:	82 ef       	ldi	r24, 0xF2	; 242
  402:	90 e0       	ldi	r25, 0x00	; 0
  404:	2a 81       	ldd	r18, Y+2	; 0x02
@@ -569,43 +595,55 @@ Disassembly of section .text:
  412:	20 7e       	andi	r18, 0xE0	; 224
  414:	fc 01       	movw	r30, r24
  416:	20 83       	st	Z, r18
+		CANIDT3 = 0;
  418:	81 ef       	ldi	r24, 0xF1	; 241
  41a:	90 e0       	ldi	r25, 0x00	; 0
  41c:	fc 01       	movw	r30, r24
  41e:	10 82       	st	Z, r1
+		CANIDT4 = 0;
  420:	80 ef       	ldi	r24, 0xF0	; 240
  422:	90 e0       	ldi	r25, 0x00	; 0
  424:	fc 01       	movw	r30, r24
  426:	10 82       	st	Z, r1
+		CANIDM1 = 0; //0b11111111;
  428:	87 ef       	ldi	r24, 0xF7	; 247
  42a:	90 e0       	ldi	r25, 0x00	; 0
  42c:	fc 01       	movw	r30, r24
  42e:	10 82       	st	Z, r1
+		CANIDM2 = 0; //0b11100000;
  430:	86 ef       	ldi	r24, 0xF6	; 246
  432:	90 e0       	ldi	r25, 0x00	; 0
  434:	fc 01       	movw	r30, r24
  436:	10 82       	st	Z, r1
+		CANIDM3 = 0;
  438:	85 ef       	ldi	r24, 0xF5	; 245
  43a:	90 e0       	ldi	r25, 0x00	; 0
  43c:	fc 01       	movw	r30, r24
  43e:	10 82       	st	Z, r1
+		CANIDM4 = 0;
  440:	84 ef       	ldi	r24, 0xF4	; 244
  442:	90 e0       	ldi	r25, 0x00	; 0
  444:	fc 01       	movw	r30, r24
  446:	10 82       	st	Z, r1
+		CANSTMOB = 0;
  448:	8e ee       	ldi	r24, 0xEE	; 238
  44a:	90 e0       	ldi	r25, 0x00	; 0
  44c:	fc 01       	movw	r30, r24
  44e:	10 82       	st	Z, r1
+		CANCDMOB = (1<<CONMOB0) | 1 << DLC3;
  450:	8f ee       	ldi	r24, 0xEF	; 239
  452:	90 e0       	ldi	r25, 0x00	; 0
  454:	28 e4       	ldi	r18, 0x48	; 72
  456:	fc 01       	movw	r30, r24
  458:	20 83       	st	Z, r18
+		CANSTMOB = 0;
  45a:	8e ee       	ldi	r24, 0xEE	; 238
  45c:	90 e0       	ldi	r25, 0x00	; 0
  45e:	fc 01       	movw	r30, r24
  460:	10 82       	st	Z, r1
+	}
+	
+}
  462:	00 00       	nop
  464:	0f 90       	pop	r0
  466:	0f 90       	pop	r0

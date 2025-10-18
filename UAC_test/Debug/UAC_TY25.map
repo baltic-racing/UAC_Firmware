@@ -693,16 +693,16 @@ END GROUP
  .debug_abbrev  0x00000d13       0x7a sensor_functions.o
  .debug_abbrev  0x00000d8d       0xb9 SPI_lib_light.o
 
-.debug_line     0x00000000      0xc2c
+.debug_line     0x00000000      0xc2d
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x176 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/at90can128/avr51/crtat90can128.o
  .debug_line    0x00000176      0x134 adc_functions.o
- .debug_line    0x000002aa      0x2be canlib.o
- .debug_line    0x00000568       0xd5 CAN_data.o
- .debug_line    0x0000063d      0x24f main.o
- .debug_line    0x0000088c      0x117 misc_functions.o
- .debug_line    0x000009a3      0x113 sensor_functions.o
- .debug_line    0x00000ab6      0x176 SPI_lib_light.o
+ .debug_line    0x000002aa      0x2bf canlib.o
+ .debug_line    0x00000569       0xd5 CAN_data.o
+ .debug_line    0x0000063e      0x24f main.o
+ .debug_line    0x0000088d      0x117 misc_functions.o
+ .debug_line    0x000009a4      0x113 sensor_functions.o
+ .debug_line    0x00000ab7      0x176 SPI_lib_light.o
 
 .debug_frame    0x00000000      0x344
  *(.debug_frame)
@@ -719,9 +719,9 @@ END GROUP
  .debug_str     0x00000000      0x39f C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.7.374/gcc/dev/at90can128/avr51/crtat90can128.o
  .debug_str     0x0000039f      0x19c adc_functions.o
                                 0x1d0 (size before relaxing)
- .debug_str     0x0000053b       0x87 canlib.o
-                                0x1ef (size before relaxing)
- .debug_str     0x000005c2       0x9f CAN_data.o
+ .debug_str     0x0000053b       0xcc canlib.o
+                                0x1f8 (size before relaxing)
+ .debug_str     0x00000607       0x5a CAN_data.o
                                 0x1f9 (size before relaxing)
  .debug_str     0x00000661       0xf9 main.o
                                 0x2e5 (size before relaxing)
