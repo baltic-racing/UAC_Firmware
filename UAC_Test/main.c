@@ -27,6 +27,14 @@ int main(void)
 	CAN_Init_Messages();
 	SPI_MasterInit();
 	
+	/*	#	UAC0_mob	#	UAC1_mob
+	FL	#	0x700		#	0x701
+	FR	#	0x710		#	0x711
+	RL	#	0x720		#	0x721
+	RR	#	0x730		#	0x731
+		
+	*/
+	
 	struct CAN_MOB can_UAC0_mob;
 	can_UAC0_mob.mob_id = 0x710;
 	can_UAC0_mob.mob_idmask = 0xFFFF;//sent
