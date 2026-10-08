@@ -36,42 +36,24 @@ int main(void)
 	struct CAN_MOB can_UAC1_mob;
 	can_UAC1_mob.mob_id = 0x711;
 	can_UAC1_mob.mob_idmask = 0xFFFF;//sent
-	can_UAC1_mob.mob_number = 0;
+	can_UAC1_mob.mob_number = 1;
 	uint8_t UAC1_databytes[8] = {0};
 	
 	sei();
 
 	while (1)
 	{
-		if(TIME_PASSED_10_MS)
+		if(TIME_PASSED_1_MS)
 		{
 			adc_start_conversion();
-			uint16_t adc_value = adc_get_1(); // Get the ADC value from the sensor
+			uint16_t adc_value = adc_get_1();	// Get the ADC value from the sensor
 			
-			float voltage = (adc_value / (float)ADC_MAX_VALUE) * ADC_VOLTAGE_REF;
-			
-			float acceleration = (voltage - ZERO_G_VOLTAGE) / SENSITIVITY;
-
-			// Convert acceleration to a range from -100.0 to +100.0 g
-			int16_t scaledAcceleration = (int16_t)(acceleration * 100);
-
-			// Prepare CAN message
-			uint8_t UAC_databytes[2];
-			if (scaledAcceleration < 0) 
-			
-			{
-				scaledAcceleration = -scaledAcceleration;
-				UAC0_databytes[0] =	(uint8_t)(scaledAcceleration & 0xFF);			// Lower byte
-				UAC0_databytes[1] = (uint8_t)((scaledAcceleration >> 8) & 0x7F);	// Higher byte with sign bit cleared
-				UAC0_databytes[1] |= 0x80;											// Set the sign bit for negative values
-			}
-			else 
-			{
-				UAC0_databytes[0] = (uint8_t)(scaledAcceleration & 0xFF);			// Lower byte
-				UAC0_databytes[1] = (uint8_t)((scaledAcceleration >> 8) & 0x7F);	// Higher byte with sign bit cleared
-			}
-			
+			int16_t voltage = (float)(adc_value * 4.8828);	// 5000mV/1024adc = 4,88 mV / adc
+			int16_t acceleration = (voltage - 2500) / 0.2; // (voltage-offset)/sensitivity // in 0.01g
+									
 			// CAN bus
+			UAC0_databytes[0] =	(uint8_t)((acceleration >> 8) & 0xFF);	// msb
+			UAC0_databytes[1] = (uint8_t)(acceleration  & 0xFF);		// lsb
 			UAC0_databytes[2] = 0;
 			UAC0_databytes[3] = 0;
 			UAC0_databytes[4] = 0;
@@ -81,7 +63,7 @@ int main(void)
 
 			can_tx(&can_UAC0_mob, UAC0_databytes); // send the CAN Message	100Hz
 						
-			time_10ms = sys_time;
+			time_1ms = sys_time;
 		
 		} // end of 10ms
 
